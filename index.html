@@ -233,45 +233,49 @@
 
         
 <!-- Anthology Event Section -->
-<section id="anthology-event" class="track-section" data-aos="fade-up" style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 40px;">
+<section id="anthology-event" class="track-section" data-aos="fade-up">
     <h2 class="section-title">ANTHOLOGY 2026 <span class="section-subtitle">(Official Audio Experience)</span></h2>
     
-    <div id="countdown" style="text-align: center; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">
-        <h3 style="color: var(--accent); letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 10px;">PREMIERE STARTS IN:</h3>
-        <div id="timer" style="font-size: 2rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--accent);">00:00:00</div>
-    </div>
+    <div class="track-grid">
+        <div class="glass-card embed-card upcoming-container" style="padding: 20px;">
+            <!-- Countdown -->
+            <div id="countdown" style="text-align: center; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">
+                <h3 style="color: var(--accent); letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 10px; opacity: 0.9;">PREMIERE STARTS IN:</h3>
+                <div id="timer" style="font-size: 1.8rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--accent);">00:00:00</div>
+            </div>
 
-    <div class="glass-card embed-card youtube-container" style="max-width: 900px; margin: 0 auto; width: 90%; padding: 10px;">
-        <iframe width="100%" height="500" 
-            src="https://www.youtube.com/embed/tsOJ9RhJSHY?si=0GvCKTWJjYkqEePp" 
-            title="Sonvex Beat Anthology 2026" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-        <div style="padding: 20px; text-align: center;">
-            <h3 style="margin-bottom: 10px;">The 2026 Anthology</h3>
-            <p style="opacity: 0.8; font-size: 0.9rem; margin-bottom: 20px;">
-                A curated journey through the most iconic Modern Arabic Official Songs by Prod. SB. An immersive experience blending profound Arabic poetry with modern beats.
-            </p>
+            <!-- Video -->
+            <div class="youtube-container" style="margin-bottom: 20px;">
+                <iframe width="100%" height="400" 
+                    src="https://www.youtube.com/embed/tsOJ9RhJSHY?si=0GvCKTWJjYkqEePp" 
+                    title="Sonvex Beat Anthology 2026" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <!-- Description (Outside the Video) -->
+            <div style="text-align: center; margin-top: 15px;">
+                <h3 style="margin-bottom: 8px; color: #fff;">The 2026 Anthology</h3>
+                <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+                    A curated journey through the most iconic Modern Arabic Official Songs by Prod. SB. An immersive experience blending profound Arabic poetry with modern beats.
+                </p>
+            </div>
         </div>
     </div>
 </section>
 
 <script>
-// العداد التنازلي مضبوط ليعمل حتى الساعة 10:30 صباحاً
+// العداد
 const countDownDate = new Date().setHours(10, 30, 0, 0);
-
 const x = setInterval(function() {
     const now = new Date().getTime();
     const distance = countDownDate - now;
-
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
     document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
-
     if (distance < 0) {
         clearInterval(x);
         document.getElementById("timer").innerHTML = "LIVE NOW!";
