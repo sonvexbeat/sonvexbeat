@@ -231,58 +231,59 @@
 
 
 
-        
-<!-- Anthology Event Section -->
+        <!-- Anthology Event Section -->
 <section id="anthology-event" class="track-section" data-aos="fade-up">
-    <h2 class="section-title">ANTHOLOGY 2026 <span class="section-subtitle">(Official Audio Experience)</span></h2>
+    <h2 class="section-title">ANTHOLOGY 2026</h2>
     
-    <div class="track-grid">
-        <div class="glass-card embed-card upcoming-container" style="padding: 20px;">
-            <!-- Countdown -->
-            <div id="countdown" style="text-align: center; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">
-                <h3 style="color: var(--accent); letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 10px; opacity: 0.9;">PREMIERE STARTS IN:</h3>
-                <div id="timer" style="font-size: 1.8rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--accent);">00:00:00</div>
-            </div>
+    <div style="text-align: center; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">
+        <h3 style="color: var(--accent); letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 10px;">PREMIERE STARTS IN:</h3>
+        <div id="countdown-timer" style="font-size: 1.8rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--accent);">Loading...</div>
+    </div>
 
-            <!-- Video -->
-            <div class="youtube-container" style="margin-bottom: 20px;">
-                <iframe width="100%" height="400" 
+    <div class="track-grid" style="display: flex; justify-content: center;">
+        <div class="glass-card" style="padding: 10px; width: 100%; max-width: 800px;">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
                     src="https://www.youtube.com/embed/tsOJ9RhJSHY?si=0GvCKTWJjYkqEePp" 
-                    title="Sonvex Beat Anthology 2026" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-            <!-- Description (Outside the Video) -->
-            <div style="text-align: center; margin-top: 15px;">
-                <h3 style="margin-bottom: 8px; color: #fff;">The 2026 Anthology</h3>
-                <p style="opacity: 0.7; font-size: 0.9rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                    A curated journey through the most iconic Modern Arabic Official Songs by Prod. SB. An immersive experience blending profound Arabic poetry with modern beats.
-                </p>
+                    frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 25px; padding: 0 20px;">
+        <p style="opacity: 0.7; font-size: 0.95rem; max-width: 600px; margin: 0 auto;">
+            A curated journey through the most iconic Modern Arabic Official Songs by Prod. SB.
+        </p>
     </div>
 </section>
 
 <script>
-// العداد
-const countDownDate = new Date().setHours(10, 30, 0, 0);
-const x = setInterval(function() {
-    const now = new Date().getTime();
-    const distance = countDownDate - now;
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
-    if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("timer").innerHTML = "LIVE NOW!";
-    }
-}, 1000);
-</script>
+    
+    // العداد
+(function() {
+    const targetDate = new Date();
+    targetDate.setHours(10, 30, 0, 0); // 10:30 AM
 
+    const updateTimer = () => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            document.getElementById("countdown-timer").innerHTML = "LIVE NOW!";
+            return;
+        }
+
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById("countdown-timer").innerHTML = `${h}h ${m}m ${s}s`;
+    };
+
+    setInterval(updateTimer, 1000);
+    updateTimer(); // تنفيذ فوري
+})();
+</script>
 
 
         
