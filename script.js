@@ -138,19 +138,66 @@ document.addEventListener('DOMContentLoaded', () => {
     function titleFromFileName(fileName) {
         const base = fileName.replace(/\.mp3$/i, '').trim();
 
-        // لو الاسم بالشكل: track95 - Song Name
         const separator = base.indexOf(' - ');
         if (separator > -1) {
             const niceTitle = base.slice(separator + 3).trim();
             if (niceTitle) return niceTitle;
         }
 
-        // fallback بسيط: track95 -> Track 95
         return base
             .replace(/[_-]+/g, ' ')
             .replace(/\s+/g, ' ')
             .trim()
             .replace(/^track\s*(\d+)$/i, 'Track $1');
+    }
+
+    function loadJsMediaTags() {
+        return new Promise((resolve, reject) => {
+            if (window.jsmediatags) {
+                resolve(window.jsmediatags);
+                return;
+            }
+
+            const existing = document.querySelector('script[data-sonvex-metadata-parser]');
+            if (existing) {
+                existing.addEventListener('load', () => resolve(window.jsmediatags), { once: true });
+                existing.addEventListener('error', reject, { once: true });
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/jsmediatags@3.9.5/dist/jsmediatags.min.js';
+            script.async = true;
+            script.dataset.sonvexMetadataParser = 'true';
+
+            script.onload = () => {
+                if (window.jsmediatags) resolve(window.jsmediatags);
+                else reject(new Error('Metadata parser loaded but is unavailable.'));
+            };
+            script.onerror = () => reject(new Error('Could not load MP3 metadata parser.'));
+            document.head.appendChild(script);
+        });
+    }
+
+    function readMp3Title(url, fallbackTitle) {
+        return new Promise(resolve => {
+            if (!window.jsmediatags) {
+                resolve(fallbackTitle);
+                return;
+            }
+
+            window.jsmediatags.read(url, {
+                onSuccess: tag => {
+                    const title = tag?.tags?.title;
+                    resolve(
+                        typeof title === 'string' && title.trim()
+                            ? title.trim()
+                            : fallbackTitle
+                    );
+                },
+                onError: () => resolve(fallbackTitle)
+            });
+        });
     }
 
     async function loadGitHubRadioTracks() {
@@ -199,7 +246,36 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (discovered.length > 0) {
-                radioPlaylist = discovered;
+                try {
+                    await loadJsMediaTags();
+
+                    const metadataTargets = discovered.filter(track =>
+                        !existingTitles.has(track.file)
+                    );
+
+                    const metadataResults = await Promise.all(
+                        metadataTargets.map(async track => ({
+                            ...track,
+                            title: await readMp3Title(track.file, track.title)
+                        }))
+                    );
+
+                    const metadataMap = new Map(
+                        metadataResults.map(track => [track.file, track.title])
+                    );
+
+                    radioPlaylist = discovered.map(track => ({
+                        ...track,
+                        title: metadataMap.get(track.file) || track.title
+                    }));
+                } catch (metadataError) {
+                    console.warn(
+                        'SONVEX Radio: MP3 metadata could not be loaded; using filenames for new tracks.',
+                        metadataError
+                    );
+                    radioPlaylist = discovered;
+                }
+
                 console.log(
                     `SONVEX Radio: ${radioPlaylist.length} MP3 tracks loaded from GitHub.`
                 );
@@ -316,20 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
             shuffledQueue = shuffleArray(radioPlaylist);
-
-// TEST MODE: force track95.mp3 to play first once.
-if (isFirstPlay) {
-    const testIndex = shuffledQueue.findIndex(track =>
-        /(^|\/)track95\.mp3$/i.test(track.file)
-    );
-    if (testIndex !== -1) {
-        [shuffledQueue[0], shuffledQueue[testIndex]] =
-            [shuffledQueue[testIndex], shuffledQueue[0]];
-        console.log('SONVEX RADIO TEST: track95.mp3 forced to first position.');
-    } else {
-        console.warn('SONVEX RADIO TEST: track95.mp3 was not found in GitHub playlist yet.');
-    }
-}
 
 
 
