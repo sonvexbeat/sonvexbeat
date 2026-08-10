@@ -317,6 +317,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             shuffledQueue = shuffleArray(radioPlaylist);
 
+// TEST MODE: force track95.mp3 to play first once.
+if (isFirstPlay) {
+    const testIndex = shuffledQueue.findIndex(track =>
+        /(^|\/)track95\.mp3$/i.test(track.file)
+    );
+    if (testIndex !== -1) {
+        [shuffledQueue[0], shuffledQueue[testIndex]] =
+            [shuffledQueue[testIndex], shuffledQueue[0]];
+        console.log('SONVEX RADIO TEST: track95.mp3 forced to first position.');
+    } else {
+        console.warn('SONVEX RADIO TEST: track95.mp3 was not found in GitHub playlist yet.');
+    }
+}
+
 
 
             currentTrackIndex = 0;
