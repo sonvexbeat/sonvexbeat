@@ -124,19 +124,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    const radioPlaylist = Array.from(radioItems).map(item => ({
-
-
-
+    // القائمة القديمة تظل كـ fallback لو GitHub API لم يستجب.
+    let radioPlaylist = Array.from(radioItems).map(item => ({
         title: item.getAttribute('data-title'),
-
-
-
         file: item.getAttribute('data-src')
-
-
-
     }));
+
+    // SONVEX BEAT GitHub Auto Radio
+    // يكتشف أي MP3 جديد داخل tracks/ تلقائياً بدون تعديل index.html.
+    const GITHUB_TRACKS_API =
+        'https://api.github.com/repos/sonvexbeat/sonvexbeat/contents/tracks';
+
+    function titleFromFileName(fileName) {
+        const base = fileName.replace(/\.mp3$/i, '').trim();
+
+        // لو الاسم بالشكل: track95 - Song Name
+        const separator = base.indexOf(' - ');
+        if (separator > -1) {
+            const niceTitle = base.slice(separator + 3).trim();
+            if (niceTitle) return niceTitle;
+        }
+
+        // fallback بسيط: track95 -> Track 95
+        return base
+            .replace(/[_-]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/^track\s*(\d+)$/i, 'Track $1');
+    }
+
+    async function loadGitHubRadioTracks() {
+        try {
+            const existingTitles = new Map(
+                radioPlaylist.map(track => [track.file.replace(/^\.\//, ''), track.title])
+            );
+
+            const discovered = [];
+            let page = 1;
+
+            while (true) {
+                const response = await fetch(
+                    `${GITHUB_TRACKS_API}?ref=main&per_page=100&page=${page}`,
+                    {
+                        cache: 'no-store',
+                        headers: { 'Accept': 'application/vnd.github+json' }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`GitHub API HTTP ${response.status}`);
+                }
+
+                const entries = await response.json();
+
+                if (!Array.isArray(entries)) {
+                    throw new Error('Unexpected GitHub API response');
+                }
+
+                discovered.push(
+                    ...entries
+                        .filter(entry =>
+                            entry.type === 'file' &&
+                            /\.mp3$/i.test(entry.name)
+                        )
+                        .map(entry => ({
+                            file: `tracks/${encodeURIComponent(entry.name).replace(/%2F/gi, '/')}`,
+                            title: existingTitles.get(`tracks/${entry.name}`) ||
+                                   titleFromFileName(entry.name)
+                        }))
+                );
+
+                if (entries.length < 100) break;
+                page++;
+            }
+
+            if (discovered.length > 0) {
+                radioPlaylist = discovered;
+                console.log(
+                    `SONVEX Radio: ${radioPlaylist.length} MP3 tracks loaded from GitHub.`
+                );
+            }
+        } catch (error) {
+            console.warn(
+                'SONVEX Radio: GitHub auto-discovery failed; using the existing playlist.',
+                error
+            );
+        }
+    }
+
+    // يبدأ التحميل في الخلفية؛ الراديو الحالي يظل شغالاً أثناء ذلك.
+    loadGitHubRadioTracks();
 
 
 
