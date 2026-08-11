@@ -162,14 +162,15 @@ header {
 /* Go to Studio — match the header glass buttons exactly */
 .nav-controls .studio-link,
 .nav-controls .studio-link:visited {
-    text-decoration: none;
+    text-decoration: none !important;
     color: var(--text-primary);
 }
 
 .nav-controls .studio-link:hover,
-.nav-controls .studio-link:focus {
+.nav-controls .studio-link:focus,
+.nav-controls .studio-link:active {
     color: var(--text-primary);
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 /* Layout Utilities */
