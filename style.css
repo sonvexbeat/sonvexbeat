@@ -159,6 +159,19 @@ header {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+/* Go to Studio — match the header glass buttons exactly */
+.nav-controls .studio-link,
+.nav-controls .studio-link:visited {
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.nav-controls .studio-link:hover,
+.nav-controls .studio-link:focus {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
 /* Layout Utilities */
 main {
     max-width: 1200px;
