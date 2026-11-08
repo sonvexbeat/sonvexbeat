@@ -2769,7 +2769,6 @@
   const status = document.getElementById('svInstallStatus');
   if (!installButton || !overlay || !confirmButton) return;
 
-  let deferredInstallPrompt = null;
   const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches ||
     window.matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;
   const openPanel = () => {
@@ -2787,13 +2786,12 @@
     installButton.focus();
   };
 
+  // Suppress any automatic browser install promotion. This site button only
+  // opens the branded panel; it never invokes the browser's native prompt.
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
-    deferredInstallPrompt = event;
-    installButton.dataset.installReady = 'true';
   });
   window.addEventListener('appinstalled', () => {
-    deferredInstallPrompt = null;
     delete installButton.dataset.installReady;
     status.textContent = 'SONVEX BEAT is now installed.';
     confirmButton.textContent = 'INSTALLED';
@@ -2808,34 +2806,27 @@
     if (event.key === 'Escape' && overlay.classList.contains('is-open')) closePanel();
   });
 
-  confirmButton.addEventListener('click', async () => {
+  confirmButton.addEventListener('click', () => {
     if (isStandalone()) {
       status.textContent = 'SONVEX BEAT is already installed on this device.';
+      confirmButton.textContent = 'ALREADY INSTALLED';
       confirmButton.disabled = true;
       return;
     }
-    if (deferredInstallPrompt) {
-      const promptEvent = deferredInstallPrompt;
-      deferredInstallPrompt = null;
-      confirmButton.disabled = true;
-      try {
-        await promptEvent.prompt();
-        const choice = await promptEvent.userChoice;
-        if (choice && choice.outcome === 'accepted') {
-          status.textContent = 'Installation accepted. SONVEX BEAT is being added.';
-          confirmButton.textContent = 'INSTALLATION STARTED';
-        } else {
-          status.textContent = 'Installation was cancelled.';
-          confirmButton.disabled = false;
-        }
-      } catch (error) {
-        console.warn('SONVEX install prompt failed:', error);
-        status.textContent = 'Direct installation is not available right now.';
-        confirmButton.disabled = false;
-      }
-      return;
+
+    const ua = navigator.userAgent || '';
+    const isIOS = /iphone|ipad|ipod/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /android/i.test(ua);
+
+    if (isIOS) {
+      status.textContent = 'To add SONVEX BEAT: open Share in Safari, then choose “Add to Home Screen”.';
+    } else if (isAndroid) {
+      status.textContent = 'To add SONVEX BEAT: open your browser menu (⋮), then choose “Install app” or “Add to Home screen”.';
+    } else {
+      status.textContent = 'To add SONVEX BEAT: open your browser menu (⋮), then choose “Install SONVEX BEAT” or “Install page as app”.';
     }
-    status.textContent = 'Direct installation is not available in this browser right now.';
+    confirmButton.textContent = 'INSTALLATION STEPS';
   });
 
   if ('serviceWorker' in navigator && window.isSecureContext) {
