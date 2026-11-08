@@ -1,15 +1,12 @@
 {
-  "name": "SONVEX BEAT Official",
+  "id": "./",
+  "name": "SONVEX BEAT — Enter the Sound",
   "short_name": "SONVEX BEAT",
-  "start_url": "index.html",
+  "description": "A cinematic music experience by SONVEX BEAT.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#050a12",
-  "theme_color": "#050a12",
-  "icons": [
-    {
-      "src": "https://i.ibb.co/xVgJjLJ/SB-Logo-PNG.png?v=2",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "orientation": "portrait",
+  "background_color": "#08090b",
+  "theme_color": "#08090b"
 }
