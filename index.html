@@ -2727,82 +2727,117 @@
   </script>
 
 <style id="sonvex-pwa-install-styles">
-  /* Minimal install feedback only — the browser owns the native install prompt */
-  .pwa-install-toast[hidden]{display:none!important}
-  .pwa-install-toast{position:fixed;z-index:1006;left:50%;bottom:26px;transform:translateX(-50%);max-width:calc(100% - 32px);padding:12px 17px;border:1px solid rgba(228,212,189,.3);background:#17181c;color:#eee;font-size:12px;line-height:1.5;box-shadow:0 12px 40px rgba(0,0,0,.4);text-align:center}
-  @media(max-width:600px){.pwa-install-toast{bottom:16px;width:max-content}}
+  .sv-install-overlay{position:fixed;inset:0;z-index:10080;display:grid;place-items:center;padding:22px;background:rgba(0,0,0,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+  .sv-install-overlay.is-open{opacity:1;visibility:visible}
+  .sv-install-panel{position:relative;width:min(100%,410px);overflow:hidden;border:1px solid rgba(228,212,189,.28);border-radius:22px;background:radial-gradient(ellipse at 50% -15%,rgba(184,138,91,.2),transparent 58%),linear-gradient(155deg,#17191e,#090a0d 72%);box-shadow:0 28px 100px rgba(0,0,0,.7);padding:34px 28px 28px;text-align:center;color:#f4f0e9;transform:translateY(14px) scale(.98);transition:transform .25s ease}
+  .sv-install-overlay.is-open .sv-install-panel{transform:translateY(0) scale(1)}
+  .sv-install-close{position:absolute;right:14px;top:13px;width:34px;height:34px;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:rgba(255,255,255,.05);color:#ddd;font-size:21px;cursor:pointer}
+  .sv-install-logo{width:76px;height:76px;object-fit:contain;border-radius:18px;margin:2px auto 19px;box-shadow:0 8px 32px rgba(0,0,0,.42)}
+  .sv-install-kicker{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#c5a47f;margin-bottom:9px}
+  .sv-install-title{font-size:25px;line-height:1.2;font-weight:700;letter-spacing:.02em;margin:0 0 10px}
+  .sv-install-copy{font-size:13px;line-height:1.7;color:#a9a9ad;margin:0 auto 24px;max-width:300px}
+  .sv-install-actions{display:grid;gap:10px}
+  .sv-install-confirm{width:100%;min-height:49px;border:1px solid #c9a77e;border-radius:999px;background:linear-gradient(110deg,#d4b38d,#a77b50);color:#111;font-weight:800;letter-spacing:.04em;cursor:pointer;transition:filter .2s,transform .2s}
+  .sv-install-confirm:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .sv-install-confirm:disabled{opacity:.55;cursor:not-allowed;filter:grayscale(.5);transform:none}
+  .sv-install-cancel{border:0;background:transparent;color:#929399;padding:10px;cursor:pointer;font-size:12px}
+  .sv-install-status{min-height:18px;margin-top:12px;font-size:11px;line-height:1.5;color:#c5a47f}
+  @media(max-width:480px){.sv-install-panel{padding:30px 22px 22px;border-radius:19px}.sv-install-title{font-size:23px}}
+  @media(prefers-reduced-motion:reduce){.sv-install-overlay,.sv-install-panel{transition:none}}
 </style>
-<div class="pwa-install-toast" id="pwaInstallToast" role="status" aria-live="polite" hidden></div>
-
+<div class="sv-install-overlay" id="svInstallOverlay" aria-hidden="true">
+  <section class="sv-install-panel" role="dialog" aria-modal="true" aria-labelledby="svInstallTitle">
+    <button class="sv-install-close" id="svInstallClose" type="button" aria-label="Close">×</button>
+    <img class="sv-install-logo" src="./icon-512.png" alt="SONVEX BEAT" />
+    <div class="sv-install-kicker">ENTER THE SOUND</div>
+    <h2 class="sv-install-title" id="svInstallTitle">SONVEX BEAT</h2>
+    <p class="sv-install-copy">Your music experience, one click away.</p>
+    <div class="sv-install-actions">
+      <button class="sv-install-confirm" id="svInstallConfirm" type="button">INSTALL SONVEX BEAT</button>
+      <button class="sv-install-cancel" id="svInstallCancel" type="button">Not now</button>
+    </div>
+    <div class="sv-install-status" id="svInstallStatus" role="status" aria-live="polite"></div>
+  </section>
+</div>
 <script id="sonvex-pwa-install-script">
 (() => {
   const installButton = document.getElementById('pwaInstallBtn');
-  const toast = document.getElementById('pwaInstallToast');
-  if (!installButton || !toast) return;
+  const overlay = document.getElementById('svInstallOverlay');
+  const confirmButton = document.getElementById('svInstallConfirm');
+  const closeButton = document.getElementById('svInstallClose');
+  const cancelButton = document.getElementById('svInstallCancel');
+  const status = document.getElementById('svInstallStatus');
+  if (!installButton || !overlay || !confirmButton) return;
 
   let deferredInstallPrompt = null;
-  let toastTimer = null;
-
-  const isStandalone = () =>
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.matchMedia('(display-mode: fullscreen)').matches ||
-    navigator.standalone === true;
-
-  const showToast = (message) => {
-    toast.textContent = message;
-    toast.hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { toast.hidden = true; }, 3200);
+  const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;
+  const openPanel = () => {
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    status.textContent = '';
+    confirmButton.disabled = false;
+    confirmButton.textContent = isStandalone() ? 'ALREADY INSTALLED' : 'INSTALL SONVEX BEAT';
+    if (isStandalone()) confirmButton.disabled = true;
+    closeButton.focus();
+  };
+  const closePanel = () => {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    installButton.focus();
   };
 
-  // Capture the browser's native install event so the button can open it directly.
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     installButton.dataset.installReady = 'true';
   });
-
   window.addEventListener('appinstalled', () => {
     deferredInstallPrompt = null;
     delete installButton.dataset.installReady;
-    showToast('SONVEX BEAT installed');
+    status.textContent = 'SONVEX BEAT is now installed.';
+    confirmButton.textContent = 'INSTALLED';
+    confirmButton.disabled = true;
   });
 
-  installButton.addEventListener('click', async () => {
+  installButton.addEventListener('click', openPanel);
+  closeButton.addEventListener('click', closePanel);
+  cancelButton.addEventListener('click', closePanel);
+  overlay.addEventListener('click', (event) => { if (event.target === overlay) closePanel(); });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && overlay.classList.contains('is-open')) closePanel();
+  });
+
+  confirmButton.addEventListener('click', async () => {
     if (isStandalone()) {
-      showToast('SONVEX BEAT is already installed');
+      status.textContent = 'SONVEX BEAT is already installed on this device.';
+      confirmButton.disabled = true;
       return;
     }
-
     if (deferredInstallPrompt) {
       const promptEvent = deferredInstallPrompt;
       deferredInstallPrompt = null;
+      confirmButton.disabled = true;
       try {
         await promptEvent.prompt();
         const choice = await promptEvent.userChoice;
-        showToast(choice && choice.outcome === 'accepted'
-          ? 'SONVEX BEAT installation started'
-          : 'Installation cancelled');
+        if (choice && choice.outcome === 'accepted') {
+          status.textContent = 'Installation accepted. SONVEX BEAT is being added.';
+          confirmButton.textContent = 'INSTALLATION STARTED';
+        } else {
+          status.textContent = 'Installation was cancelled.';
+          confirmButton.disabled = false;
+        }
       } catch (error) {
         console.warn('SONVEX install prompt failed:', error);
-        showToast('Use your browser menu to install SONVEX BEAT');
+        status.textContent = 'Direct installation is not available right now.';
+        confirmButton.disabled = false;
       }
       return;
     }
-
-    // iOS Safari does not expose a programmatic PWA install prompt.
-    const ua = navigator.userAgent || '';
-    const isIOS = /iphone|ipad|ipod/i.test(ua) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-    if (isIOS) {
-      showToast('In Safari: Share → Add to Home Screen');
-    } else {
-      showToast('Install SONVEX BEAT from your browser menu');
-    }
+    status.textContent = 'Direct installation is not available in this browser right now.';
   });
 
-  // Register the PWA service worker only on HTTPS or localhost.
   if ('serviceWorker' in navigator && window.isSecureContext) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js', { scope: './' })
