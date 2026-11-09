@@ -802,6 +802,15 @@
   .hero-art img:not(.loaded){opacity:0!important;visibility:hidden!important}
   .hero-art img.loaded{opacity:1!important;visibility:visible!important;transition:opacity .28s ease}
 </style>
+
+<style id="sonvex-upcoming-gold-artwork-labels">
+  /* Keep the three editorial labels on the artwork in SONVEX gold. */
+  .upcoming-art-topline,
+  .upcoming-art-topline > span,
+  .upcoming-art-bottom > span:first-child {
+    color: var(--accent2, #e4d4bd) !important;
+  }
+</style>
 </head>
 <body>
 <header class="site-header" id="siteHeader">
@@ -859,7 +868,7 @@
 <img alt="Ana A3taref — upcoming SONVEX BEAT cover artwork" decoding="async" id="upcomingArtwork" loading="lazy" src="https://i1.sndcdn.com/artworks-MMTfb9I7CKCttby0-VvotSg-t3000x3000.jpg">
 <div aria-hidden="true" class="upcoming-art-vignette"></div>
 <div class="upcoming-art-topline"><span>SONVEX BEAT · EXCLUSIVE</span><span>01 / NEXT RELEASE</span></div>
-<div class="upcoming-art-bottom"><span>THE NEXT RELEASE</span><strong id="upcomingArtTitle">ANA A3TAREF</strong><span dir="rtl" id="upcomingArtArabic" lang="ar">أنا أعترف</span></div>
+<div class="upcoming-art-bottom"><span>THE NEXT RELEASE</span></div>
 <div aria-hidden="true" class="upcoming-art-index">SB<span>®</span></div>
 </img></div>
 <div class="upcoming-art-caption"><span>ORIGINAL RELEASE ARTWORK</span><span>PROD SB</span></div>
@@ -868,10 +877,9 @@
 <div class="upcoming-detail-top"><span>UPCOMING RELEASE</span><span>SONVEX BEAT · 2026</span></div>
 <div class="upcoming-track-title-wrap">
 <h3 id="upcomingTitle">Ana A3taref</h3>
-<p dir="rtl" id="upcomingArabic" lang="ar">أنا أعترف</p>
 <span class="upcoming-artist" id="upcomingArtist">PROD SB</span>
 </div>
-<p class="upcoming-description" id="upcomingDescription">A new SONVEX BEAT chapter is on its way — hear an exclusive 30-second preview before the full release</p>
+<p class="upcoming-description" id="upcomingDescription">A new SONVEX BEAT chapter is on its way — hear an exclusive first-listen preview before the full release</p>
 <div class="upcoming-release-date">
 <span class="upcoming-mini-label">OFFICIAL RELEASE DATE</span>
 <strong id="upcomingDateText">DATE TO BE ANNOUNCED</strong>
@@ -888,17 +896,17 @@
 <p class="upcoming-countdown-note" id="upcomingCountdownNote">The release date will be announced soon</p>
 <div class="upcoming-player" id="upcomingPlayer">
 <div class="upcoming-player-head">
-<div><span class="upcoming-mini-label">EXCLUSIVE AUDIO PREVIEW</span><strong>30 SECONDS · FIRST LISTEN</strong></div>
+<div><span class="upcoming-mini-label">EXCLUSIVE AUDIO PREVIEW</span><strong>FIRST LISTEN · FULL TEASER</strong></div>
 <span class="upcoming-source-tag"><i></i> GITHUB AUDIO</span>
 </div>
 <div class="upcoming-player-controls">
-<button aria-label="Play 30-second preview" aria-pressed="false" class="upcoming-play-button" id="upcomingPlay" type="button">
+<button aria-label="Play teaser preview" aria-pressed="false" class="upcoming-play-button" id="upcomingPlay" type="button">
 <span aria-hidden="true" id="upcomingPlayIcon">▶</span>
 </button>
 <div class="upcoming-audio-main">
 <div aria-hidden="true" class="upcoming-waveform" id="upcomingWaveform"></div>
-<input aria-label="Seek within 30-second preview" class="upcoming-seek" id="upcomingSeek" max="30" min="0" step="0.1" type="range" value="0"/>
-<div class="upcoming-audio-time"><span id="upcomingCurrentTime">0:00</span><span>0:30</span></div>
+<input aria-label="Seek within teaser preview" class="upcoming-seek" id="upcomingSeek" max="0" min="0" step="0.1" type="range" value="0" disabled/>
+<div class="upcoming-audio-time"><span id="upcomingCurrentTime">0:00</span><span id="upcomingDuration">--:--</span></div>
 </div>
 </div>
 <div aria-live="polite" class="upcoming-audio-status" id="upcomingAudioStatus" role="status">Preview ready · Press play to listen</div>
@@ -1202,18 +1210,25 @@
       // UPCOMING RELEASE SETTINGS — update these values for each new campaign.
       upcomingRelease: {
         title: "Ana A3taref",
-        titleArabic: "أنا أعترف",
         artist: "PROD. SB",
         artworkUrl: "https://i1.sndcdn.com/artworks-MMTfb9I7CKCttby0-VvotSg-t3000x3000.jpg",
-        // Existing 30-second teaser.mp3 from the public GitHub repository.
+        // Automatically use the newest cover file uploaded to the public GitHub repo root.
+        // Supported names: cover.webp, cover.web, cover.jpg, cover.jpeg, cover.png.
+        githubCover: {
+          owner: "sonvexbeat",
+          repo: "sonvexbeat",
+          branch: "main",
+          directory: "",
+          fileNames: ["cover.webp", "cover.web", "cover.jpg", "cover.jpeg", "cover.png"]
+        },
+        // Teaser audio from the public GitHub repository; playback uses its full file duration.
         teaserAudioUrl: "https://raw.githubusercontent.com/sonvexbeat/sonvexbeat/main/teaser.mp3",
-        previewSeconds: 30,
         // Keep empty until the exact Cairo release date/time is confirmed.
         // Example: "2026-12-05T20:00:00+02:00"
         releaseAt: "",
         // Once the countdown ends, the CTA takes visitors to the latest YouTube releases.
         listenUrl: "#releases",
-        description: "A new SONVEX BEAT chapter is on its way — hear an exclusive 30-second preview before the full release"
+        description: "A new SONVEX BEAT chapter is on its way — hear an exclusive first-listen preview before the full release"
       }
     };
 
@@ -2629,7 +2644,214 @@
       });
     }
 
-    // Upcoming release: GitHub teaser player (hard-limited to 30 seconds) + live countdown.
+    // Upcoming artwork is read directly from the public GitHub repository.
+    // The image may contain multilingual XMP metadata (dc:title with en/ar language tags).
+    // Read the upcoming track name from the MP3 ID3 metadata, never from the artwork.
+    // Recommended tags: TIT2 = "English title | Arabic title"; optionally add
+    // TXXX fields TITLE_EN and TITLE_AR for separate language-specific values.
+    function id3DecodeText(bytes, encoding){
+      if(!bytes || !bytes.length) return '';
+      let label = 'windows-1252';
+      if(encoding === 1) label = 'utf-16';
+      else if(encoding === 2) label = 'utf-16be';
+      else if(encoding === 3) label = 'utf-8';
+      try{
+        return new TextDecoder(label).decode(bytes).replace(/\u0000/g,'').trim();
+      }catch(_){
+        try{return new TextDecoder('utf-8').decode(bytes).replace(/\u0000/g,'').trim();}
+        catch(__){return '';}
+      }
+    }
+
+    function id3SynchsafeSize(bytes, offset){
+      return ((bytes[offset] & 0x7f) << 21) |
+             ((bytes[offset+1] & 0x7f) << 14) |
+             ((bytes[offset+2] & 0x7f) << 7) |
+             (bytes[offset+3] & 0x7f);
+    }
+
+    function id3FrameTextParts(data){
+      if(!data || data.length < 2) return ['', ''];
+      const encoding = data[0];
+      const wide = encoding === 1 || encoding === 2;
+      let separator = -1;
+      if(wide){
+        for(let i=1; i+1<data.length; i++){
+          if(data[i] === 0 && data[i+1] === 0){ separator=i; break; }
+        }
+        if(separator < 0) return [id3DecodeText(data.subarray(1), encoding), ''];
+        return [id3DecodeText(data.subarray(1, separator), encoding),
+                id3DecodeText(data.subarray(separator+2), encoding)];
+      }
+      for(let i=1; i<data.length; i++) if(data[i] === 0){ separator=i; break; }
+      if(separator < 0) return [id3DecodeText(data.subarray(1), encoding), ''];
+      return [id3DecodeText(data.subarray(1, separator), encoding),
+              id3DecodeText(data.subarray(separator+1), encoding)];
+    }
+
+    function parseUpcomingMp3Metadata(buffer){
+      const bytes = new Uint8Array(buffer);
+      const view = new DataView(buffer);
+      const result = {titleEnglish:'', artist:'', description:''};
+      if(bytes.length < 10 || String.fromCharCode(...bytes.subarray(0,3)) !== 'ID3') return result;
+      const version = bytes[3];
+      if(version < 2 || version > 4) return result;
+      const tagEnd = Math.min(bytes.length, 10 + id3SynchsafeSize(bytes, 6));
+      let offset = 10;
+      const flags = bytes[5];
+      if((flags & 0x40) && offset + 4 <= tagEnd){
+        const extSize = version === 4
+          ? id3SynchsafeSize(bytes, offset)
+          : view.getUint32(offset, false);
+        offset += version === 4 ? extSize : extSize + 4;
+      }
+      const custom = {};
+      let title = '', subtitle = '', artist = '', comment = '';
+      while(offset < tagEnd){
+        const headerSize = version === 2 ? 6 : 10;
+        if(offset + headerSize > tagEnd) break;
+        const idLength = version === 2 ? 3 : 4;
+        const frameId = String.fromCharCode(...bytes.subarray(offset, offset + idLength));
+        if(!frameId.trim() || /^\0+$/.test(frameId)) break;
+        let frameSize;
+        if(version === 2){
+          frameSize = (bytes[offset+3] << 16) | (bytes[offset+4] << 8) | bytes[offset+5];
+        }else if(version === 4){
+          frameSize = id3SynchsafeSize(bytes, offset+4);
+        }else{
+          frameSize = view.getUint32(offset+4, false);
+        }
+        if(!Number.isFinite(frameSize) || frameSize <= 0 || offset + headerSize + frameSize > tagEnd) break;
+        const data = bytes.subarray(offset + headerSize, offset + headerSize + frameSize);
+        const normalizedId = frameId.toUpperCase();
+        if(['TIT2','TT2'].includes(normalizedId)) title = id3DecodeText(data.subarray(1), data[0]);
+        else if(['TIT3','TT3'].includes(normalizedId)) subtitle = id3DecodeText(data.subarray(1), data[0]);
+        else if(['TPE1','TP1'].includes(normalizedId)) artist = id3DecodeText(data.subarray(1), data[0]);
+        else if(['COMM','COM'].includes(normalizedId)){
+          const payload = data.subarray(4);
+          const parts = id3FrameTextParts(payload);
+          comment = parts[1] || parts[0] || '';
+        }else if(['TXXX','TXX'].includes(normalizedId)){
+          const [key, value] = id3FrameTextParts(data);
+          if(key && value) custom[key.toLowerCase().replace(/[^a-z0-9]/g,'')] = value;
+        }
+        offset += headerSize + frameSize;
+      }
+      const findCustom = keys => {
+        for(const key of keys){
+          const value = custom[key];
+          if(value) return value.trim();
+        }
+        return '';
+      };
+      result.titleEnglish = findCustom(['titleen','titleenglish','englishtitle','english','title_en']);
+      const mainTitle = String(title || '').trim();
+      if(!result.titleEnglish && mainTitle){
+        const englishPart = mainTitle.split('|')[0].trim();
+        if(englishPart && !/[\u0600-\u06ff\u0750-\u077f\u08a0-\u08ff]/.test(englishPart)){
+          result.titleEnglish = englishPart;
+        }
+      }
+      if(!result.titleEnglish && subtitle){
+        const englishSubtitle = String(subtitle).split('|')[0].trim();
+        if(englishSubtitle && !/[\u0600-\u06ff\u0750-\u077f\u08a0-\u08ff]/.test(englishSubtitle)){
+          result.titleEnglish = englishSubtitle;
+        }
+      }
+      result.artist = artist;
+      result.description = comment;
+      return result;
+    }
+
+    function applyUpcomingAudioMetadata(metadata, cfg){
+      if(!metadata || typeof metadata !== 'object') return false;
+      const english = String(metadata.titleEnglish || '').trim();
+      const artist = String(metadata.artist || '').trim();
+      const description = String(metadata.description || '').trim();
+      let changed = false;
+      if(english){
+        $('#upcomingTitle').textContent = english;
+        changed = true;
+      }
+      if(artist) $('#upcomingArtist').textContent = artist;
+      if(description) $('#upcomingDescription').textContent = description;
+      const finalEnglish = english || cfg.title || 'Upcoming SONVEX Release';
+      $('#upcomingArtwork').alt = `${finalEnglish} — SONVEX BEAT upcoming release artwork`;
+      return changed;
+    }
+
+    async function loadUpcomingAudioMetadata(cfg){
+      if(!cfg.teaserAudioUrl) return false;
+      try{
+        const response = await fetch(cfg.teaserAudioUrl, {
+          method:'GET',
+          cache:'no-store',
+          headers:{Range:'bytes=0-262143'}
+        });
+        if(!response.ok && response.status !== 206) throw new Error(`Audio metadata request failed (${response.status})`);
+        const buffer = await response.arrayBuffer();
+        const metadata = parseUpcomingMp3Metadata(buffer);
+        const applied = applyUpcomingAudioMetadata(metadata, cfg);
+        if(applied){
+          console.info('SONVEX upcoming title loaded from the MP3 ID3 metadata.');
+          return true;
+        }
+        console.info('No English title tag found in teaser.mp3. Keeping the configured upcoming title.');
+        return false;
+      }catch(error){
+        console.warn('SONVEX upcoming MP3 metadata could not be read; keeping configured title.', error);
+        return false;
+      }
+    }
+
+    async function loadUpcomingGithubCover(cfg){
+      const github = cfg.githubCover || {};
+      if(!github.owner || !github.repo || !Array.isArray(github.fileNames) || !github.fileNames.length) return false;
+      const branch = github.branch || 'main';
+      const directory = String(github.directory || '').replace(/^\/+|\/+$/g,'');
+      const base = `https://raw.githubusercontent.com/${encodeURIComponent(github.owner)}/${encodeURIComponent(github.repo)}/${encodeURIComponent(branch)}`;
+      let selected = null;
+      let selectedName = '';
+      for(const filename of github.fileNames){
+        const path = [directory, filename].filter(Boolean).join('/').split('/').map(encodeURIComponent).join('/');
+        const url = `${base}/${path}?v=${Date.now()}`;
+        try{
+          const response = await fetch(url, {cache:'no-store'});
+          if(!response.ok) continue;
+          const buffer = await response.arrayBuffer();
+          if(!buffer.byteLength) continue;
+          selected = {buffer, url};
+          selectedName = filename;
+          break;
+        }catch(error){
+          console.info(`Upcoming GitHub cover not available at ${filename}.`, error);
+        }
+      }
+      if(!selected) return false;
+
+      const cover = $('#upcomingArtwork');
+      if(!cover) return false;
+      let mime = 'image/webp';
+      const head = new Uint8Array(selected.buffer,0,Math.min(12,selected.buffer.byteLength));
+      if(head.length >= 8 && head[0] === 0x89 && head[1] === 0x50 && head[2] === 0x4e && head[3] === 0x47) mime = 'image/png';
+      else if(head.length >= 3 && head[0] === 0xff && head[1] === 0xd8 && head[2] === 0xff) mime = 'image/jpeg';
+      else if(head.length >= 4 && head[0] === 0x47 && head[1] === 0x49 && head[2] === 0x46 && head[3] === 0x38) mime = 'image/gif';
+      const objectUrl = URL.createObjectURL(new Blob([selected.buffer], {type:mime}));
+      const previousObjectUrl = cover.dataset.githubObjectUrl;
+      cover.onload = () => { if(previousObjectUrl) URL.revokeObjectURL(previousObjectUrl); };
+      cover.onerror = () => {
+        cover.onerror = null;
+        URL.revokeObjectURL(objectUrl);
+        if(cfg.artworkUrl) cover.src = cfg.artworkUrl;
+      };
+      cover.dataset.githubObjectUrl = objectUrl;
+      cover.src = objectUrl;
+
+      console.info(`SONVEX upcoming artwork loaded from GitHub: ${selectedName}`);
+      return true;
+    }
+
+    // Upcoming release: GitHub cover + full-length teaser player + live countdown.
     function formatClock(seconds){
       const safe = Math.max(0, Math.floor(Number(seconds) || 0));
       return `${Math.floor(safe / 60)}:${String(safe % 60).padStart(2,'0')}`;
@@ -2641,17 +2863,12 @@
       if(!section) return;
 
       const title = cfg.title || 'Upcoming SONVEX Release';
-      const titleArabic = cfg.titleArabic || '';
       const artist = cfg.artist || 'PROD. SB';
       const artwork = cfg.artworkUrl || '';
-      const maxPreviewSeconds = Math.max(1, Math.min(30, Number(cfg.previewSeconds) || 30));
 
       $('#upcomingTitle').textContent = title;
-      $('#upcomingArabic').textContent = titleArabic;
       $('#upcomingArtist').textContent = artist;
       $('#upcomingDescription').textContent = cfg.description || 'A new SONVEX BEAT chapter is on its way.';
-      $('#upcomingArtTitle').textContent = title.toUpperCase();
-      $('#upcomingArtArabic').textContent = titleArabic;
 
       const cover = $('#upcomingArtwork');
       if(artwork){
@@ -2660,7 +2877,9 @@
           if(parsed.protocol === 'https:') cover.src = parsed.href;
         }catch(_){ /* Keep the current configured artwork fallback. */ }
       }
-      cover.alt = `${title}${titleArabic ? ' | ' + titleArabic : ''} — SONVEX BEAT upcoming release artwork`;
+      cover.alt = `${title} — SONVEX BEAT upcoming release artwork`;
+      // Each page load checks GitHub for the current cover file, so replacing cover.webp updates this section automatically.
+      loadUpcomingGithubCover(cfg).catch(error => console.warn('SONVEX upcoming GitHub artwork update failed:', error));
 
       const audio = $('#upcomingAudio');
       audio.crossOrigin = 'anonymous'; // Enable Web Audio analysis when the media host permits CORS.
@@ -2668,15 +2887,20 @@
       const playIcon = $('#upcomingPlayIcon');
       const seek = $('#upcomingSeek');
       const timeReadout = $('#upcomingCurrentTime');
+      const durationReadout = $('#upcomingDuration');
       const status = $('#upcomingAudioStatus');
       const waveform = $('#upcomingWaveform');
       const playerPanel = $('#upcomingPlayer');
 
-      seek.max = String(maxPreviewSeconds);
+      seek.max = '0';
+      seek.value = '0';
+      seek.disabled = true;
       audio.preload = 'metadata';
       if(cfg.teaserAudioUrl){
         audio.setAttribute('src', cfg.teaserAudioUrl);
         audio.load();
+        // Read the English track name from the MP3 ID3 tags, independently of the cover image.
+        loadUpcomingAudioMetadata(cfg);
       }
 
       // Draw a restrained decorative waveform; the progress state follows the real audio time.
@@ -2690,11 +2914,20 @@
       }
       const waveBars = [...waveform.children];
 
+      function getTeaserDuration(){
+        return Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 0;
+      }
+
       function paintProgress(){
-        const current = Math.min(maxPreviewSeconds, Math.max(0, audio.currentTime || 0));
-        const percent = current / maxPreviewSeconds;
-        seek.value = String(current);
-        timeReadout.textContent = formatClock(current);
+        const duration = getTeaserDuration();
+        const current = Math.max(0, Number(audio.currentTime) || 0);
+        const boundedCurrent = duration ? Math.min(current, duration) : current;
+        const percent = duration ? Math.min(1, boundedCurrent / duration) : 0;
+        seek.max = String(duration);
+        seek.value = String(boundedCurrent);
+        seek.disabled = !duration;
+        timeReadout.textContent = formatClock(boundedCurrent);
+        durationReadout.textContent = duration ? formatClock(duration) : '--:--';
         const playedCount = Math.round(percent * waveBars.length);
         waveBars.forEach((bar,index)=>bar.classList.toggle('played', index < playedCount));
       }
@@ -2702,12 +2935,12 @@
       function setPlayState(isPlaying){
         playIcon.textContent = isPlaying ? 'Ⅱ' : '▶';
         playButton.setAttribute('aria-pressed', String(isPlaying));
-        playButton.setAttribute('aria-label', isPlaying ? 'Pause 30-second preview' : 'Play 30-second preview');
+        playButton.setAttribute('aria-label', isPlaying ? 'Pause teaser preview' : 'Play teaser preview');
         playerPanel.classList.toggle('is-playing', isPlaying);
       }
 
       if(cfg.teaserAudioUrl){
-        status.textContent = '30-second teaser ready · Hosted on GitHub.';
+        status.textContent = 'Teaser ready · Hosted on GitHub.';
       }else{
         status.textContent = 'The GitHub teaser URL has not been configured.';
         playButton.disabled = true;
@@ -2715,7 +2948,7 @@
       }
 
       audio.addEventListener('loadedmetadata',()=>{
-        status.textContent = '30-second teaser ready · Press play to listen.';
+        status.textContent = 'Preview ready · Press play to listen.';
         paintProgress();
       });
       audio.addEventListener('canplay',()=>{
@@ -2723,25 +2956,18 @@
       });
       audio.addEventListener('play',()=>{
         setPlayState(true);
-        status.textContent = 'Playing exclusive 30-second preview.';
+        status.textContent = 'Playing exclusive preview.';
         setVisualizerPlayback('teaser', true);
       });
       audio.addEventListener('pause',()=>{
         setPlayState(false);
         setVisualizerPlayback('teaser', false);
-        if(audio.currentTime < maxPreviewSeconds && audio.currentTime > 0){
+        if(!audio.ended && audio.currentTime > 0){
           status.textContent = 'Preview paused.';
         }
       });
-      audio.addEventListener('timeupdate',()=>{
-        if(audio.currentTime >= maxPreviewSeconds){
-          audio.pause();
-          try{ audio.currentTime = maxPreviewSeconds; }catch(_){ }
-          setPlayState(false);
-          status.textContent = 'Preview complete · Replay anytime.';
-        }
-        paintProgress();
-      });
+      audio.addEventListener('timeupdate', paintProgress);
+      audio.addEventListener('durationchange', paintProgress);
       audio.addEventListener('ended',()=>{
         setPlayState(false);
         setVisualizerPlayback('teaser', false);
@@ -2759,7 +2985,7 @@
           return;
         }
         if(audio.paused){
-          if(audio.currentTime >= maxPreviewSeconds - .05){
+          if(audio.ended || (getTeaserDuration() && audio.currentTime >= getTeaserDuration() - .05)){
             audio.currentTime = 0;
             paintProgress();
           }
@@ -2795,9 +3021,10 @@
       });
 
       seek.addEventListener('input',()=>{
-        const requested = Math.min(maxPreviewSeconds, Math.max(0, Number(seek.value) || 0));
-        if(Number.isFinite(audio.duration) && audio.duration > 0){
-          audio.currentTime = Math.min(requested, Math.max(0, audio.duration - .05));
+        const duration = getTeaserDuration();
+        if(duration){
+          const requested = Math.min(duration, Math.max(0, Number(seek.value) || 0));
+          audio.currentTime = Math.min(requested, Math.max(0, duration - .05));
         }
         paintProgress();
       });
