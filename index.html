@@ -863,7 +863,7 @@
 <div class="upcoming-feature reveal" id="upcomingFeature">
 <div class="upcoming-art-column">
 <div class="upcoming-art-frame">
-<img alt="Ana A3taref — upcoming SONVEX BEAT cover artwork" decoding="async" id="upcomingArtwork" loading="lazy" src="https://i1.sndcdn.com/artworks-MMTfb9I7CKCttby0-VvotSg-t3000x3000.jpg">
+<img alt="Upcoming SONVEX BEAT cover artwork" decoding="async" id="upcomingArtwork" loading="lazy">
 <div aria-hidden="true" class="upcoming-art-vignette"></div>
 <div class="upcoming-art-topline"><span>SONVEX BEAT · EXCLUSIVE</span><span>01 / NEXT RELEASE</span></div>
 <div class="upcoming-art-bottom"><span>THE NEXT RELEASE</span></div>
@@ -1209,7 +1209,6 @@
       upcomingRelease: {
         title: "Ana A3taref",
         artist: "PROD. SB",
-        artworkUrl: "https://i1.sndcdn.com/artworks-MMTfb9I7CKCttby0-VvotSg-t3000x3000.jpg",
         // Automatically use the newest cover file uploaded to the public GitHub repo root.
         // Supported names: cover.webp, cover.web, cover.jpg, cover.jpeg, cover.png.
         githubCover: {
@@ -2862,19 +2861,14 @@
 
       const title = cfg.title || 'Upcoming SONVEX Release';
       const artist = cfg.artist || 'PROD. SB';
-      const artwork = cfg.artworkUrl || '';
 
       $('#upcomingTitle').textContent = title;
       $('#upcomingArtist').textContent = artist;
       $('#upcomingDescription').textContent = cfg.description || 'A new SONVEX BEAT chapter is on its way.';
 
       const cover = $('#upcomingArtwork');
-      if(artwork){
-        try{
-          const parsed = new URL(artwork);
-          if(parsed.protocol === 'https:') cover.src = parsed.href;
-        }catch(_){ /* Keep the current configured artwork fallback. */ }
-      }
+      // Never preload an old SoundCloud/YouTube cover. The upcoming artwork comes only from GitHub.
+      cover.removeAttribute('src');
       cover.alt = `${title} — SONVEX BEAT upcoming release artwork`;
       // Each page load checks GitHub for the current cover file, so replacing cover.webp updates this section automatically.
       loadUpcomingGithubCover(cfg).catch(error => console.warn('SONVEX upcoming GitHub artwork update failed:', error));
