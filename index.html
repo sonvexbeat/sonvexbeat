@@ -28,6 +28,7 @@
     /* Hero */
     .hero{min-height:760px;height:min(900px,100svh);padding-top:var(--nav);position:relative;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at 76% 48%,rgba(150,133,110,.16),transparent 36%),linear-gradient(100deg,#08090b 0%,#090a0d 48%,#111216 100%)}.hero:before{content:"";position:absolute;width:720px;height:720px;right:-170px;top:6%;border-radius:50%;border:1px solid rgba(255,255,255,.06);box-shadow:0 0 0 50px rgba(255,255,255,.012),0 0 0 110px rgba(255,255,255,.009)}.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:35px}.hero-copy{padding:55px 0 95px}.hero-kicker{display:flex;align-items:center;gap:13px;margin-bottom:28px}.live-dot{height:6px;width:6px;background:#c6a783;border-radius:50%;box-shadow:0 0 16px #c6a783}.hero h1{font:800 clamp(54px,8vw,112px)/.88 'Manrope',sans-serif;letter-spacing:-.09em;margin:0;max-width:720px}.hero h1 span{display:block;color:transparent;-webkit-text-stroke:1px rgba(238,235,228,.68);font-weight:500}.hero-intro{color:#a6a7ac;font-size:14px;line-height:1.85;max-width:430px;margin:30px 0 29px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.hero-meta{display:flex;gap:32px;margin-top:54px}.meta-block strong{display:block;font:600 20px 'Manrope';letter-spacing:-.04em}.meta-block small{display:block;color:var(--muted);font-size:9px;letter-spacing:.17em;text-transform:uppercase;margin-top:4px}.hero-art-wrap{height:540px;position:relative;display:flex;align-items:center;justify-content:center}.hero-art{width:min(430px,82%);aspect-ratio:1/1;position:relative;isolation:isolate;transform:rotate(3deg);box-shadow:0 30px 100px rgba(0,0,0,.6);background:#171719;overflow:hidden;border:1px solid rgba(255,255,255,.15)}.hero-art img{width:100%;height:100%;object-fit:cover;filter:grayscale(.72) contrast(1.08);opacity:.74}.hero-art:after{content:"";position:absolute;inset:0;background:linear-gradient(145deg,rgba(8,9,11,.03),rgba(8,9,11,.8)),linear-gradient(0deg,rgba(8,9,11,.8),transparent 50%)}.art-label{position:absolute;z-index:2;left:27px;right:24px;bottom:25px}.art-label small{font-size:9px;letter-spacing:.22em;color:var(--accent2);text-transform:uppercase}.art-label strong{display:block;font:600 clamp(23px,3vw,36px)/1.05 'Manrope';letter-spacing:-.055em;margin-top:9px}.art-label span{display:block;color:#bbb;font-size:10px;letter-spacing:.15em;margin-top:8px;text-transform:uppercase}.orbit{position:absolute;width:490px;height:490px;border:1px solid rgba(230,220,204,.17);border-radius:50%;animation:orbit 45s linear infinite}.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(230,220,204,.12);border-radius:50%;inset:23px}.orbit:after{inset:56px}.orbit-dot{position:absolute;top:12%;right:13%;width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 20px var(--accent2)}@keyframes orbit{to{transform:rotate(360deg)}}.hero-visualizer{position:absolute;left:0;right:0;bottom:0;height:92px;display:flex;align-items:end;justify-content:center;gap:4px;opacity:.5;mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}.hero-visualizer i{width:2px;height:var(--h);background:linear-gradient(0deg,rgba(192,172,144,.03),rgba(218,207,190,.75));transform-origin:bottom;animation:bars 1.3s ease-in-out infinite alternate;animation-delay:var(--d)}@keyframes bars{from{transform:scaleY(.25);opacity:.45}to{transform:scaleY(1);opacity:1}}.hero-scroll{position:absolute;bottom:36px;left:28px;writing-mode:vertical-rl;color:#777;font-size:9px;letter-spacing:.24em;text-transform:uppercase}
     /* Track cards */
+    .release-state{grid-column:1/-1;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px 20px;text-align:center;color:var(--muted);font-size:13px;letter-spacing:.02em}.release-retry{border:1px solid rgba(228,212,189,.38);background:transparent;color:var(--accent2);padding:11px 18px;font:700 9px 'Manrope',sans-serif;letter-spacing:.16em;cursor:pointer;transition:.25s}.release-retry:hover{background:rgba(228,212,189,.08);border-color:var(--accent2)}
     .release-section{background:linear-gradient(180deg,#0b0c0e,#0a0b0d)}.release-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.track-card{position:relative;min-width:0;border:1px solid var(--line);background:linear-gradient(145deg,#141519,#0e0f12);padding:11px;transition:.35s var(--ease);overflow:hidden}.track-card:hover{transform:translateY(-6px);border-color:rgba(218,202,181,.4);box-shadow:0 22px 50px rgba(0,0,0,.24)}.track-cover{aspect-ratio:1/1;background:#191a1d;overflow:hidden;position:relative}.track-cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(.72);transition:transform .65s var(--ease),filter .5s}.track-card:hover .track-cover img{transform:scale(1.055);filter:grayscale(.25)}.track-cover:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(0deg,rgba(0,0,0,.5),transparent)}.play-cover{position:absolute;z-index:2;right:12px;bottom:12px;width:43px;height:43px;border:1px solid rgba(255,255,255,.6);border-radius:50%;background:rgba(8,9,11,.55);backdrop-filter:blur(8px);color:white;font-size:15px;cursor:pointer;transition:.25s}.play-cover:hover{background:var(--text);color:#111}.track-info{padding:15px 5px 8px}.track-info h3{font:600 15px 'Manrope';letter-spacing:-.03em;margin:0 0 6px}.track-info p{font-size:10px;color:var(--muted);margin:0;letter-spacing:.12em;text-transform:uppercase}.track-tag{display:inline-block;color:var(--accent2);font-size:8px;letter-spacing:.17em;text-transform:uppercase;margin-top:12px}
     .upcoming-banner{display:grid;grid-template-columns:1fr auto;align-items:center;gap:25px;padding:25px 28px;margin-top:22px;border:1px solid rgba(228,212,189,.2);background:linear-gradient(110deg,rgba(180,157,126,.1),rgba(18,19,22,.9));position:relative;overflow:hidden}.upcoming-banner:after{content:"COMING SOON";position:absolute;right:105px;top:50%;transform:translateY(-50%);font:800 clamp(35px,7vw,82px) 'Manrope';letter-spacing:-.08em;color:rgba(255,255,255,.035);white-space:nowrap;pointer-events:none}.upcoming-copy{position:relative;z-index:1}.upcoming-copy strong{display:block;font:600 clamp(21px,3vw,32px) 'Manrope';letter-spacing:-.05em;margin-top:8px}.upcoming-copy p{font-size:10px;color:var(--muted);margin:7px 0 0}.upcoming-flag{position:relative;z-index:1;border:1px solid rgba(228,212,189,.45);padding:10px 14px;color:var(--accent2);font-size:9px;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}.platforms-section{background:radial-gradient(ellipse at 50% 0%,rgba(184,165,139,.085),transparent 48%),#0a0b0d;border-block:1px solid var(--line);overflow:hidden}
     .platform-section-head{margin-bottom:40px}
@@ -791,6 +792,16 @@
   @media(max-width:720px){.community-comments-panel{padding:17px 14px 14px}.community-comments-topline{align-items:flex-start;flex-direction:column;gap:8px}.community-comments-grid{grid-template-columns:1fr;gap:9px}.community-comment-card{min-height:0;padding:15px}.community-comment-text{margin:15px 0;max-height:none;-webkit-line-clamp:7}.community-comments-bottom{align-items:flex-start;flex-direction:column;gap:10px}.community-comments-bottom a{white-space:normal}}
 </style>
 
+
+<style id="sonvex-hero-artwork-loading-fix">
+  #heroArtwork:not(.loaded){opacity:0!important}
+  #heroArtwork.loaded{opacity:1!important;transition:opacity .28s ease}
+</style>
+
+<style id="sonvex-hero-soundcloud-only">
+  .hero-art img:not(.loaded){opacity:0!important;visibility:hidden!important}
+  .hero-art img.loaded{opacity:1!important;visibility:visible!important;transition:opacity .28s ease}
+</style>
 </head>
 <body>
 <header class="site-header" id="siteHeader">
@@ -817,7 +828,7 @@
 </div>
 <div aria-label="Featured release artwork" class="hero-art-wrap">
 <div class="orbit"><i class="orbit-dot"></i></div>
-<div class="hero-art"><img alt="Latest SONVEX BEAT release cover artwork" data-fallback="https://i.ytimg.com/vi/HupclsjUcRY/hqdefault.jpg" id="heroArtwork" onerror="this.onerror=null;this.src=this.dataset.fallback || 'https://i.ytimg.com/vi/HupclsjUcRY/hqdefault.jpg'" src="https://i.ytimg.com/vi/HupclsjUcRY/maxresdefault.jpg"/><div class="art-label"><small>Latest release cover · SONVEX BEAT</small></div></div>
+<div class="hero-art"><img alt="Latest SONVEX BEAT SoundCloud release artwork" id="heroArtwork" decoding="async" aria-label="Latest SoundCloud release artwork"/><div class="art-label"><small>Latest release cover · SONVEX BEAT</small></div></div>
 </div>
 </div>
 <div class="hero-scroll">Scroll to discover</div>
@@ -1096,10 +1107,9 @@
 <label><input name="originalConfirmed" required="" type="checkbox" value="yes"/><span>I confirm that these lyrics are my original work, or that I have the necessary written permission to submit them</span></label>
 <label><input name="termsAccepted" required="" type="checkbox" value="yes"/><span>I have read and accept the submission terms, including SONVEX BEAT’s creative direction and the current no-payment / no-revenue-share policy</span></label>
 </div>
-<div aria-hidden="true" class="lyricists-honeypot"><label>Leave this field empty<input autocomplete="off" name="website" tabindex="-1" type="text"/></label></div>
-<input type="hidden" name="formStartedAt" id="lyricSubmissionStartedAt" value=""/>
+<div aria-hidden="true" class="lyricists-honeypot"><label>Leave this field empty<input autocomplete="off" name="_honey" tabindex="-1" type="text"/></label></div>
 <button class="lyricists-submit lyricists-v3-submit" id="lyricSubmissionSubmit" type="submit"><span>SUBMIT FOR REVIEW</span><b aria-hidden="true">↗</b></button>
-<p class="lyricists-v3-privacy"><strong>SUBMISSION PRIVACY</strong><span>Your lyrics and contact details are sent privately to SONVEX BEAT for review and are never displayed publicly</span></p>
+<p class="lyricists-v3-privacy"><strong>SUBMISSION PRIVACY</strong><span>Your lyrics and contact details are sent to SONVEX BEAT for review through FormSubmit — submissions are retained for 30 days and your work is never displayed publicly</span></p>
 <div aria-live="polite" class="lyricists-status lyricists-v3-status" id="lyricSubmissionStatus" role="status"></div>
 </form>
 </div>
@@ -1181,7 +1191,7 @@
       latestReleasesApiUrl: "https://sonvex-latest-releases.sonvexbeat.workers.dev/releases",
       // SoundCloud RSS-powered radio library (metadata + audio enclosures only).
       radioApiUrl: "https://sonvex-latest-releases.sonvexbeat.workers.dev/radio",
-      lyricSubmissionsApiUrl: "https://formsubmit.co/ajax/0ca21051c925b0264076d719cfd13264",
+      lyricSubmissionsApiUrl: "https://formsubmit.co/ajax/info@sonvexbeat.com",
       lyricSubmissionsEmail: "info@sonvexbeat.com",
       // Community ratings catalogue and voting endpoints — Cloudflare Worker + D1.
       ratingsCatalogApiUrl: "https://sonvex-latest-releases.sonvexbeat.workers.dev/ratings/catalog",
@@ -1227,6 +1237,50 @@
       {title:"Samtt Al-Ettab | صمت العتاب",short:"Samtt Al-Ettab",id:"4snfAxkETmE",group:"All-time hit",moods:["heartbreak","reflection"]},
       {title:"Henni Elayya | هنيّ إليّ",short:"Henni Elayya",id:"BeC3gJKPP6M",group:"All-time hit",moods:["energy","dark"]}
     ];
+    // Latest Releases is populated only by the Cloudflare Worker. A small local
+    // last-known-good cache prevents a temporary Worker/network failure on refresh
+    // from making the release cards disappear. The Worker remains the source of truth.
+    const LATEST_RELEASES_STORAGE_KEY = 'sonvexbeat.latest-releases.v3';
+    const LATEST_HERO_STORAGE_KEY = 'sonvexbeat.latest-hero-artwork.v3';
+    // Last confirmed playlist snapshot. This is a startup safety net for local/file://
+    // previews where browser storage may be unavailable; the Worker still refreshes it.
+    const BOOTSTRAP_LATEST_RELEASES = [
+      {title:'Huna Entahaina | هنا انتهينا',short:'Huna Entahaina',id:'PbZAYEBgDOw',published:'2026-11-07T07:37:28+00:00'},
+      {title:'Ana Ghorba | أنا غربة',short:'Ana Ghorba',id:'KiIG6ew-z5Q',published:'2026-11-02T07:53:01+00:00'},
+      {title:'7obby El-7alal | حبي الحلال',short:'7obby El-7alal',id:'TED9K_WbTO8',published:'2026-10-29T08:14:48+00:00'},
+      {title:'Salamat | سلامات',short:'Salamat',id:'bscc5qkeEtY',published:'2026-10-24T07:15:01+00:00'},
+      {title:'Ya Maghrour | يا مغرور',short:'Ya Maghrour',id:'HXCDbjU17Gg',published:'2026-10-21T07:16:27+00:00'},
+      {title:'Anti Fitna | أنتي فتنة',short:'Anti Fitna',id:'maHwr42Iwk8',published:'2026-10-17T07:40:08+00:00'},
+      {title:'Nehayet Qissa | نهاية قصة',short:'Nehayet Qissa',id:'Blf49zKOP5E',published:'2026-10-14T07:05:16+00:00'},
+      {title:'Baqi El-Hawa | باقي الهوى',short:'Baqi El-Hawa',id:'oABQDCmmNkQ',published:'2026-10-10T07:06:26+00:00'}
+    ].map(item => ({...item,group:'Latest release',moods:['reflection']}));
+    function readStoredLatestReleases(){
+      try{
+        const stored = JSON.parse(localStorage.getItem(LATEST_RELEASES_STORAGE_KEY) || 'null');
+        if(Array.isArray(stored)){
+          const valid = stored.filter(item => item && /^[A-Za-z0-9_-]{11}$/.test(String(item.id || '').trim()) && String(item.title || '').trim())
+            .slice(0,8)
+            .map(item => ({
+              title:String(item.title).trim(),
+              short:String(item.short || String(item.title).split('|')[0].split('•')[0]).trim(),
+              id:String(item.id).trim(),
+              group:'Latest release',
+              moods:Array.isArray(item.moods) ? item.moods : ['reflection'],
+              published:String(item.published || '')
+            }));
+          if(valid.length) return valid;
+        }
+      }catch(_){ /* file:// and privacy modes may block localStorage */ }
+      return BOOTSTRAP_LATEST_RELEASES.map(track => ({...track}));
+    }
+    const storedLatestReleases = readStoredLatestReleases();
+    if(storedLatestReleases.length){
+      const storedIds = new Set(storedLatestReleases.map(track => track.id));
+      const history = TRACKS.filter(track => !storedIds.has(track.id));
+      TRACKS.splice(0, TRACKS.length, ...storedLatestReleases, ...history);
+    }
+    let latestReleasesState = storedLatestReleases.length ? 'ready' : 'loading';
+    let latestReleasesError = null;
     let currentTrackIndex = 0;
     let ytPlayer = null;
     let ytReady = false;
@@ -1271,7 +1325,24 @@
 
     function renderTracks(){
       const grid=$('#releaseGrid');
+      if(!grid) return;
+
+      // Never label the built-in historical catalogue as new releases.
+      if(latestReleasesState !== 'ready'){
+        if(latestReleasesState === 'loading'){
+          grid.innerHTML = '<div class="release-state" role="status" aria-live="polite">Loading the latest SONVEX BEAT releases…</div>';
+        }else{
+          grid.innerHTML = `<div class="release-state" role="status">Latest releases could not be loaded. Please try again.<button class="release-retry" type="button" data-release-retry>RETRY</button></div>`;
+          grid.querySelector('[data-release-retry]')?.addEventListener('click', loadAutomaticLatestReleases);
+        }
+        return;
+      }
+
       const latest=TRACKS.slice(0,8);
+      if(!latest.length){
+        grid.innerHTML = '<div class="release-state" role="status">No eligible full-length releases were returned by the playlist.</div>';
+        return;
+      }
       grid.innerHTML=latest.map((t,i)=>{
         const arabic=(t.title.split('|')[1]||'').trim();
         const largeCover=`https://i.ytimg.com/vi/${t.id}/maxresdefault.jpg`;
@@ -1292,6 +1363,23 @@
 
     // SoundCloud provides the hero cover image only. It never supplies playback audio.
     // YouTube Playlist RSS remains the source for all release cards and the site player.
+    function restoreCachedHeroArtwork(){
+      const image = $('#heroArtwork');
+      if(!image) return;
+      try{
+        const cachedUrl = localStorage.getItem(LATEST_HERO_STORAGE_KEY) || '';
+        if(!cachedUrl) return;
+        const parsed = new URL(cachedUrl);
+        if(parsed.protocol !== 'https:' || !parsed.hostname.endsWith('.sndcdn.com')) return;
+        const preloader = new Image();
+        preloader.onload = () => {
+          image.src = parsed.href;
+          image.classList.add('loaded');
+        };
+        preloader.src = parsed.href;
+      }catch(_){ /* Wait for the current SoundCloud artwork from the Worker. */ }
+    }
+
     function updateHeroArtworkFromSoundCloud(payload){
       const rawUrl = payload?.heroArtwork;
       if(typeof rawUrl !== 'string' || !rawUrl.trim()) return false;
@@ -1306,60 +1394,149 @@
       const image = $('#heroArtwork');
       if(!image) return false;
 
-      image.onerror = () => {
-        image.onerror = null;
-        image.src = image.dataset.fallback || 'https://i.ytimg.com/vi/HupclsjUcRY/hqdefault.jpg';
+      // Preload the replacement first, so the last confirmed cover stays visible
+      // until the new Worker-provided artwork is ready. No retired hard-coded cover.
+      const preloader = new Image();
+      preloader.onload = () => {
+        image.src = artworkUrl;
+        image.classList.add('loaded');
+        try{ localStorage.setItem(LATEST_HERO_STORAGE_KEY, artworkUrl); }catch(_){ /* Storage may be unavailable in file:// mode. */ }
       };
+      preloader.onerror = () => {
+        // Keep the previously confirmed hero artwork if the new cover cannot load.
+      };
+      preloader.src = artworkUrl;
       image.alt = 'Latest SONVEX BEAT release cover artwork';
       image.decoding = 'async';
-      image.src = artworkUrl;
       return true;
     }
 
-    // The Worker reads the YouTube playlist for playable releases and SoundCloud RSS
-    // for the square hero artwork only. The built-in catalogue remains the fallback.
-    async function loadAutomaticLatestReleases(){
-      const endpoint = SONVEX_CONFIG.latestReleasesApiUrl.trim();
-      if(!endpoint) return;
-      try{
-        const response = await fetch(endpoint, {headers:{Accept:'application/json'}, cache:'no-store'});
-        const payload = await response.json();
-        if(!response.ok) throw new Error(payload?.error || `Feed request failed (${response.status})`);
+    // The Worker is the only source for Latest Releases. Its EXCLUDE_TITLE rule stays enabled
+    // on the Worker to keep Shorts, teasers and non-release videos out of this section.
+    // The local TRACKS catalogue is retained for player/history and All-time hits only.
+    async function requestLatestReleasesWithRetry(endpoint){
+      let lastError = null;
+      for(let attempt=1; attempt<=3; attempt++){
+        try{
+          const response = await fetch(endpoint, {
+            method:'GET',
+            headers:{Accept:'application/json'},
+            cache:'no-store'
+          });
+          const responseText = await response.text();
+          let payload;
+          try{ payload = JSON.parse(responseText); }
+          catch(_){ throw new Error(`Worker returned invalid JSON (HTTP ${response.status}).`); }
 
-        // Apply the SoundCloud cover even if the YouTube playlist happens to return no tracks.
+          // A valid Worker response may contain SoundCloud hero artwork even when
+          // YouTube temporarily returns no eligible playlist items. Do not reject
+          // that response here: the caller must apply heroArtwork independently.
+          if(payload && (payload.heroArtwork || Array.isArray(payload.items))) return payload;
+          if(!response.ok){
+            const details = [payload?.error, payload?.youtubeError, payload?.soundCloudError].filter(Boolean).join(' — ');
+            throw new Error(details || `Worker request failed (HTTP ${response.status}).`);
+          }
+          throw new Error('The Worker response did not contain release or artwork data.');
+        }catch(error){
+          lastError = error;
+          if(attempt < 3) await new Promise(resolve => setTimeout(resolve, 900 * attempt));
+        }
+      }
+      throw lastError || new Error('Latest releases request failed.');
+    }
+
+    async function loadAutomaticLatestReleases(){
+      // Restore last-known-good SoundCloud artwork immediately when the browser has it.
+      // The Worker is still the live source; YouTube items and SoundCloud artwork are
+      // processed independently so a temporary playlist issue cannot suppress the hero.
+      restoreCachedHeroArtwork();
+      if(storedLatestReleases.length){
+        latestReleasesState = 'ready';
+        renderTracks();
+      }else{
+        latestReleasesState = 'loading';
+        renderTracks();
+      }
+
+      const endpoint = String(SONVEX_CONFIG.latestReleasesApiUrl || '').trim();
+      if(!endpoint){
+        latestReleasesError = new Error('Latest releases endpoint is not configured.');
+        if(!storedLatestReleases.length) latestReleasesState = 'error';
+        renderTracks();
+        return;
+      }
+
+      try{
+        const payload = await requestLatestReleasesWithRetry(endpoint);
+
+        // IMPORTANT: apply SoundCloud artwork BEFORE checking YouTube items.
+        // The Worker can successfully provide heroArtwork while its playlist feed
+        // is temporarily empty or unavailable.
         const heroArtworkUpdated = updateHeroArtworkFromSoundCloud(payload);
 
         if(!Array.isArray(payload.items) || !payload.items.length){
-          console.info(heroArtworkUpdated
-            ? 'SONVEX BEAT: hero cover updated from SoundCloud; no playlist items were returned.'
-            : 'SONVEX BEAT: no automatic playlist items were returned; keeping the built-in catalogue.');
+          latestReleasesError = new Error('The Worker returned no eligible full-length playlist items.');
+          if(storedLatestReleases.length){
+            latestReleasesState = 'ready';
+            renderTracks();
+          }else{
+            latestReleasesState = 'error';
+            renderTracks();
+          }
+          console.warn('SONVEX BEAT: no eligible YouTube items; keeping the last confirmed releases.', payload.youtubeError || '');
           return;
         }
 
-        const freshTracks = payload.items
-          .filter(item => item && /^[A-Za-z0-9_-]{11}$/.test(item.id) && item.short)
-          .map(item => ({
-            title: item.title || item.short,
-            short: item.short,
-            id: item.id,
-            group: 'Latest release',
-            moods: ['reflection'],
-            published: item.published || ''
-          }));
-        if(!freshTracks.length) throw new Error('No valid YouTube release IDs were found.');
+        // Keep the Shorts exclusion as a second safety check; `short` below is only
+        // the compact display title and is unrelated to YouTube Shorts filtering.
+        const excludedReleaseTitle = /\b(live stream|livestream|shorts?|teaser|behind the scenes|premiere)\b/i;
+        const freshTracks = payload.items.map(item=>{
+          if(!item || !/^[A-Za-z0-9_-]{11}$/.test(String(item.id || '').trim())) return null;
+          const title = String(item.title || item.short || '').trim();
+          if(!title || excludedReleaseTitle.test(title)) return null;
+          const short = String(item.short || title.split('|')[0].split('•')[0] || '').trim();
+          if(!short) return null;
+          return {
+            title,
+            short,
+            id:String(item.id).trim(),
+            group:'Latest release',
+            moods:['reflection'],
+            published:String(item.published || '')
+          };
+        }).filter(Boolean);
 
-        // Put the YouTube playlist items first; keep the existing catalogue as fallback/history.
-        const freshIds = new Set(freshTracks.map(track => track.id));
-        const remainingTracks = TRACKS.filter(track => !freshIds.has(track.id));
-        TRACKS.splice(0, TRACKS.length, ...freshTracks, ...remainingTracks);
+        const uniqueTracks = [...new Map(freshTracks.map(track=>[track.id,track])).values()];
+        uniqueTracks.sort((a,b)=>(Date.parse(b.published)||0)-(Date.parse(a.published)||0));
+        const latestTracks = uniqueTracks.slice(0,8);
+        if(!latestTracks.length){
+          latestReleasesError = new Error('The Worker returned no valid full-length releases.');
+          latestReleasesState = storedLatestReleases.length ? 'ready' : 'error';
+          renderTracks();
+          return;
+        }
 
+        const latestIds = new Set(latestTracks.map(track=>track.id));
+        const history = TRACKS.filter(track=>!latestIds.has(track.id));
+        TRACKS.splice(0, TRACKS.length, ...latestTracks, ...history);
+        try{ localStorage.setItem(LATEST_RELEASES_STORAGE_KEY, JSON.stringify(latestTracks)); }
+        catch(_){ /* Live Worker data remains active for this session if storage is unavailable. */ }
+
+        latestReleasesState = 'ready';
+        latestReleasesError = null;
         renderTracks();
         renderPopular();
-        // Ratings catalogue is independently synced from the full YouTube channel uploads.
-        // Latest Releases only refreshes its own section.
-        console.info(`SONVEX BEAT: loaded ${freshTracks.length} YouTube releases${heroArtworkUpdated ? ' and updated the SoundCloud hero cover' : ''}.`);
+        console.info(`SONVEX BEAT: refreshed ${latestTracks.length} eligible YouTube releases${heroArtworkUpdated ? ' and refreshed the SoundCloud hero cover' : ''}.`);
       }catch(error){
-        console.warn('SONVEX BEAT automatic data unavailable; using the built-in catalogue and existing hero cover.', error);
+        latestReleasesError = error;
+        if(storedLatestReleases.length){
+          latestReleasesState = 'ready';
+          console.warn('SONVEX BEAT: Worker refresh failed; showing the last confirmed releases and hero artwork.', error);
+        }else{
+          latestReleasesState = 'error';
+          console.error('SONVEX BEAT Latest Releases request failed:', error);
+        }
+        renderTracks();
       }
     }
 
@@ -1973,8 +2150,6 @@
     function setupLyricSubmission(){
       const form = $('#lyricSubmissionForm');
       if(!form) return;
-      const startedAt = $('#lyricSubmissionStartedAt');
-      if(startedAt) startedAt.value = String(Date.now());
 
       form.addEventListener('submit', async event=>{
         event.preventDefault();
@@ -1989,11 +2164,13 @@
           songTitle: String(formData.get('songTitle') || '').trim(),
           lyrics: String(formData.get('lyrics') || '').trim(),
           notes: String(formData.get('notes') || '').trim(),
-          fushaConfirmed: formData.get('fushaConfirmed') === 'yes',
-          originalConfirmed: formData.get('originalConfirmed') === 'yes',
-          termsAccepted: formData.get('termsAccepted') === 'yes',
-          website: String(formData.get('website') || '').trim(),
-          formStartedAt: Number(formData.get('formStartedAt') || 0)
+          fushaConfirmed: formData.get('fushaConfirmed') === 'yes' ? 'Confirmed' : 'Not confirmed',
+          originalConfirmed: formData.get('originalConfirmed') === 'yes' ? 'Confirmed' : 'Not confirmed',
+          termsAccepted: formData.get('termsAccepted') === 'yes' ? 'Accepted' : 'Not accepted',
+          _replyto: String(formData.get('email') || '').trim(),
+          _subject: `New SONVEX LYRICISTS submission — ${String(formData.get('songTitle') || '').trim()}`,
+          _template: 'table',
+          _honey: String(formData.get('_honey') || '').trim()
         };
 
         if(!payload.writerName || !payload.email || !payload.songTitle || !payload.lyrics){
@@ -2011,15 +2188,15 @@
           status.dataset.state = 'error';
           return;
         }
-        if(payload.lyrics.length < 80 || payload.lyrics.length > 15000){
-          status.textContent = 'Please provide complete lyrics in Arabic Fusha (80–15,000 characters).';
+        if(payload.lyrics.length > 15000){
+          status.textContent = 'The lyrics are too long. Please shorten the submission.';
           status.dataset.state = 'error';
           return;
         }
         if(
-          payload.fushaConfirmed !== true ||
-          payload.originalConfirmed !== true ||
-          payload.termsAccepted !== true
+          payload.fushaConfirmed !== 'Confirmed' ||
+          payload.originalConfirmed !== 'Confirmed' ||
+          payload.termsAccepted !== 'Accepted'
         ){
           status.textContent = 'Please confirm the submission requirements before sending.';
           status.dataset.state = 'error';
@@ -2027,7 +2204,7 @@
         }
 
         // Honeypot: silently ignore automated submissions that fill the hidden field.
-        if(payload.website){
+        if(payload._honey){
           status.textContent = 'Your submission has been received.';
           status.dataset.state = 'success';
           form.reset();
@@ -2065,7 +2242,6 @@
           status.textContent = 'Your lyrics have been sent to SONVEX BEAT for review. We will contact you by email only if your work is selected.';
           status.dataset.state = 'success';
           form.reset();
-          if(startedAt) startedAt.value = String(Date.now());
           submit.querySelector('span').textContent = 'SUBMISSION RECEIVED';
 
         }catch(error){
@@ -2729,117 +2905,82 @@
   </script>
 
 <style id="sonvex-pwa-install-styles">
-  .sv-install-overlay{position:fixed;inset:0;z-index:10080;display:grid;place-items:center;padding:22px;background:rgba(0,0,0,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
-  .sv-install-overlay.is-open{opacity:1;visibility:visible}
-  .sv-install-panel{position:relative;width:min(100%,410px);overflow:hidden;border:1px solid rgba(228,212,189,.28);border-radius:22px;background:radial-gradient(ellipse at 50% -15%,rgba(184,138,91,.2),transparent 58%),linear-gradient(155deg,#17191e,#090a0d 72%);box-shadow:0 28px 100px rgba(0,0,0,.7);padding:34px 28px 28px;text-align:center;color:#f4f0e9;transform:translateY(14px) scale(.98);transition:transform .25s ease}
-  .sv-install-overlay.is-open .sv-install-panel{transform:translateY(0) scale(1)}
-  .sv-install-close{position:absolute;right:14px;top:13px;width:34px;height:34px;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:rgba(255,255,255,.05);color:#ddd;font-size:21px;cursor:pointer}
-  .sv-install-logo{width:76px;height:76px;object-fit:contain;border-radius:18px;margin:2px auto 19px;box-shadow:0 8px 32px rgba(0,0,0,.42)}
-  .sv-install-kicker{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#c5a47f;margin-bottom:9px}
-  .sv-install-title{font-size:25px;line-height:1.2;font-weight:700;letter-spacing:.02em;margin:0 0 10px}
-  .sv-install-copy{font-size:13px;line-height:1.7;color:#a9a9ad;margin:0 auto 24px;max-width:300px}
-  .sv-install-actions{display:grid;gap:10px}
-  .sv-install-confirm{width:100%;min-height:49px;border:1px solid #c9a77e;border-radius:999px;background:linear-gradient(110deg,#d4b38d,#a77b50);color:#111;font-weight:800;letter-spacing:.04em;cursor:pointer;transition:filter .2s,transform .2s}
-  .sv-install-confirm:hover{filter:brightness(1.08);transform:translateY(-1px)}
-  .sv-install-confirm:disabled{opacity:.55;cursor:not-allowed;filter:grayscale(.5);transform:none}
-  .sv-install-cancel{border:0;background:transparent;color:#929399;padding:10px;cursor:pointer;font-size:12px}
-  .sv-install-status{min-height:18px;margin-top:12px;font-size:11px;line-height:1.5;color:#c5a47f}
-  @media(max-width:480px){.sv-install-panel{padding:30px 22px 22px;border-radius:19px}.sv-install-title{font-size:23px}}
-  @media(prefers-reduced-motion:reduce){.sv-install-overlay,.sv-install-panel{transition:none}}
+  /* Minimal install feedback only — the browser owns the native install prompt */
+  .pwa-install-toast[hidden]{display:none!important}
+  .pwa-install-toast{position:fixed;z-index:1006;left:50%;bottom:26px;transform:translateX(-50%);max-width:calc(100% - 32px);padding:12px 17px;border:1px solid rgba(228,212,189,.3);background:#17181c;color:#eee;font-size:12px;line-height:1.5;box-shadow:0 12px 40px rgba(0,0,0,.4);text-align:center}
+  @media(max-width:600px){.pwa-install-toast{bottom:16px;width:max-content}}
 </style>
-<div class="sv-install-overlay" id="svInstallOverlay" aria-hidden="true">
-  <section class="sv-install-panel" role="dialog" aria-modal="true" aria-labelledby="svInstallTitle">
-    <button class="sv-install-close" id="svInstallClose" type="button" aria-label="Close">×</button>
-    <img class="sv-install-logo" src="./icon-512.png" alt="SONVEX BEAT" />
-    <div class="sv-install-kicker">ENTER THE SOUND</div>
-    <h2 class="sv-install-title" id="svInstallTitle">SONVEX BEAT</h2>
-    <p class="sv-install-copy">Your music experience, one click away.</p>
-    <div class="sv-install-actions">
-      <button class="sv-install-confirm" id="svInstallConfirm" type="button">INSTALL SONVEX BEAT</button>
-      <button class="sv-install-cancel" id="svInstallCancel" type="button">Not now</button>
-    </div>
-    <div class="sv-install-status" id="svInstallStatus" role="status" aria-live="polite"></div>
-  </section>
-</div>
+<div class="pwa-install-toast" id="pwaInstallToast" role="status" aria-live="polite" hidden></div>
+
 <script id="sonvex-pwa-install-script">
 (() => {
   const installButton = document.getElementById('pwaInstallBtn');
-  const overlay = document.getElementById('svInstallOverlay');
-  const confirmButton = document.getElementById('svInstallConfirm');
-  const closeButton = document.getElementById('svInstallClose');
-  const cancelButton = document.getElementById('svInstallCancel');
-  const status = document.getElementById('svInstallStatus');
-  if (!installButton || !overlay || !confirmButton) return;
+  const toast = document.getElementById('pwaInstallToast');
+  if (!installButton || !toast) return;
 
   let deferredInstallPrompt = null;
-  const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches ||
-    window.matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;
-  const openPanel = () => {
-    overlay.classList.add('is-open');
-    overlay.setAttribute('aria-hidden', 'false');
-    status.textContent = '';
-    confirmButton.disabled = false;
-    confirmButton.textContent = isStandalone() ? 'ALREADY INSTALLED' : 'INSTALL SONVEX BEAT';
-    if (isStandalone()) confirmButton.disabled = true;
-    closeButton.focus();
-  };
-  const closePanel = () => {
-    overlay.classList.remove('is-open');
-    overlay.setAttribute('aria-hidden', 'true');
-    installButton.focus();
+  let toastTimer = null;
+
+  const isStandalone = () =>
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches ||
+    navigator.standalone === true;
+
+  const showToast = (message) => {
+    toast.textContent = message;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toast.hidden = true; }, 3200);
   };
 
+  // Capture the browser's native install event so the button can open it directly.
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     installButton.dataset.installReady = 'true';
   });
+
   window.addEventListener('appinstalled', () => {
     deferredInstallPrompt = null;
     delete installButton.dataset.installReady;
-    status.textContent = 'SONVEX BEAT is now installed.';
-    confirmButton.textContent = 'INSTALLED';
-    confirmButton.disabled = true;
+    showToast('SONVEX BEAT installed');
   });
 
-  installButton.addEventListener('click', openPanel);
-  closeButton.addEventListener('click', closePanel);
-  cancelButton.addEventListener('click', closePanel);
-  overlay.addEventListener('click', (event) => { if (event.target === overlay) closePanel(); });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && overlay.classList.contains('is-open')) closePanel();
-  });
-
-  confirmButton.addEventListener('click', async () => {
+  installButton.addEventListener('click', async () => {
     if (isStandalone()) {
-      status.textContent = 'SONVEX BEAT is already installed on this device.';
-      confirmButton.disabled = true;
+      showToast('SONVEX BEAT is already installed');
       return;
     }
+
     if (deferredInstallPrompt) {
       const promptEvent = deferredInstallPrompt;
       deferredInstallPrompt = null;
-      confirmButton.disabled = true;
       try {
         await promptEvent.prompt();
         const choice = await promptEvent.userChoice;
-        if (choice && choice.outcome === 'accepted') {
-          status.textContent = 'Installation accepted. SONVEX BEAT is being added.';
-          confirmButton.textContent = 'INSTALLATION STARTED';
-        } else {
-          status.textContent = 'Installation was cancelled.';
-          confirmButton.disabled = false;
-        }
+        showToast(choice && choice.outcome === 'accepted'
+          ? 'SONVEX BEAT installation started'
+          : 'Installation cancelled');
       } catch (error) {
         console.warn('SONVEX install prompt failed:', error);
-        status.textContent = 'Direct installation is not available right now.';
-        confirmButton.disabled = false;
+        showToast('Use your browser menu to install SONVEX BEAT');
       }
       return;
     }
-    status.textContent = 'Direct installation is not available in this browser right now.';
+
+    // iOS Safari does not expose a programmatic PWA install prompt.
+    const ua = navigator.userAgent || '';
+    const isIOS = /iphone|ipad|ipod/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    if (isIOS) {
+      showToast('In Safari: Share → Add to Home Screen');
+    } else {
+      showToast('Install SONVEX BEAT from your browser menu');
+    }
   });
 
+  // Register the PWA service worker only on HTTPS or localhost.
   if ('serviceWorker' in navigator && window.isSecureContext) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js', { scope: './' })
