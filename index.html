@@ -1096,9 +1096,10 @@
 <label><input name="originalConfirmed" required="" type="checkbox" value="yes"/><span>I confirm that these lyrics are my original work, or that I have the necessary written permission to submit them</span></label>
 <label><input name="termsAccepted" required="" type="checkbox" value="yes"/><span>I have read and accept the submission terms, including SONVEX BEAT’s creative direction and the current no-payment / no-revenue-share policy</span></label>
 </div>
-<div aria-hidden="true" class="lyricists-honeypot"><label>Leave this field empty<input autocomplete="off" name="_honey" tabindex="-1" type="text"/></label></div>
+<div aria-hidden="true" class="lyricists-honeypot"><label>Leave this field empty<input autocomplete="off" name="website" tabindex="-1" type="text"/></label></div>
+<input type="hidden" name="formStartedAt" id="lyricSubmissionStartedAt" value=""/>
 <button class="lyricists-submit lyricists-v3-submit" id="lyricSubmissionSubmit" type="submit"><span>SUBMIT FOR REVIEW</span><b aria-hidden="true">↗</b></button>
-<p class="lyricists-v3-privacy"><strong>SUBMISSION PRIVACY</strong><span>Your lyrics and contact details are sent to SONVEX BEAT for review through FormSubmit — submissions are retained for 30 days and your work is never displayed publicly</span></p>
+<p class="lyricists-v3-privacy"><strong>SUBMISSION PRIVACY</strong><span>Your lyrics and contact details are sent privately to SONVEX BEAT for review and are never displayed publicly</span></p>
 <div aria-live="polite" class="lyricists-status lyricists-v3-status" id="lyricSubmissionStatus" role="status"></div>
 </form>
 </div>
@@ -1180,7 +1181,7 @@
       latestReleasesApiUrl: "https://sonvex-latest-releases.sonvexbeat.workers.dev/releases",
       // SoundCloud RSS-powered radio library (metadata + audio enclosures only).
       radioApiUrl: "https://sonvex-latest-releases.sonvexbeat.workers.dev/radio",
-      lyricSubmissionsApiUrl: "https://formsubmit.co/ajax/info@sonvexbeat.com",
+      lyricSubmissionsApiUrl: "https://formsubmit.co/ajax/0ca21051c925b0264076d719cfd13264",
       lyricSubmissionsEmail: "info@sonvexbeat.com",
       // Community ratings catalogue and voting endpoints — Cloudflare Worker + D1.
       ratingsCatalogApiUrl: "https://sonvex-latest-releases.sonvexbeat.workers.dev/ratings/catalog",
@@ -1972,6 +1973,8 @@
     function setupLyricSubmission(){
       const form = $('#lyricSubmissionForm');
       if(!form) return;
+      const startedAt = $('#lyricSubmissionStartedAt');
+      if(startedAt) startedAt.value = String(Date.now());
 
       form.addEventListener('submit', async event=>{
         event.preventDefault();
@@ -1986,13 +1989,11 @@
           songTitle: String(formData.get('songTitle') || '').trim(),
           lyrics: String(formData.get('lyrics') || '').trim(),
           notes: String(formData.get('notes') || '').trim(),
-          fushaConfirmed: formData.get('fushaConfirmed') === 'yes' ? 'Confirmed' : 'Not confirmed',
-          originalConfirmed: formData.get('originalConfirmed') === 'yes' ? 'Confirmed' : 'Not confirmed',
-          termsAccepted: formData.get('termsAccepted') === 'yes' ? 'Accepted' : 'Not accepted',
-          _replyto: String(formData.get('email') || '').trim(),
-          _subject: `New SONVEX LYRICISTS submission — ${String(formData.get('songTitle') || '').trim()}`,
-          _template: 'table',
-          _honey: String(formData.get('_honey') || '').trim()
+          fushaConfirmed: formData.get('fushaConfirmed') === 'yes',
+          originalConfirmed: formData.get('originalConfirmed') === 'yes',
+          termsAccepted: formData.get('termsAccepted') === 'yes',
+          website: String(formData.get('website') || '').trim(),
+          formStartedAt: Number(formData.get('formStartedAt') || 0)
         };
 
         if(!payload.writerName || !payload.email || !payload.songTitle || !payload.lyrics){
@@ -2010,15 +2011,15 @@
           status.dataset.state = 'error';
           return;
         }
-        if(payload.lyrics.length > 15000){
-          status.textContent = 'The lyrics are too long. Please shorten the submission.';
+        if(payload.lyrics.length < 80 || payload.lyrics.length > 15000){
+          status.textContent = 'Please provide complete lyrics in Arabic Fusha (80–15,000 characters).';
           status.dataset.state = 'error';
           return;
         }
         if(
-          payload.fushaConfirmed !== 'Confirmed' ||
-          payload.originalConfirmed !== 'Confirmed' ||
-          payload.termsAccepted !== 'Accepted'
+          payload.fushaConfirmed !== true ||
+          payload.originalConfirmed !== true ||
+          payload.termsAccepted !== true
         ){
           status.textContent = 'Please confirm the submission requirements before sending.';
           status.dataset.state = 'error';
@@ -2026,7 +2027,7 @@
         }
 
         // Honeypot: silently ignore automated submissions that fill the hidden field.
-        if(payload._honey){
+        if(payload.website){
           status.textContent = 'Your submission has been received.';
           status.dataset.state = 'success';
           form.reset();
@@ -2064,6 +2065,7 @@
           status.textContent = 'Your lyrics have been sent to SONVEX BEAT for review. We will contact you by email only if your work is selected.';
           status.dataset.state = 'success';
           form.reset();
+          if(startedAt) startedAt.value = String(Date.now());
           submit.querySelector('span').textContent = 'SUBMISSION RECEIVED';
 
         }catch(error){
