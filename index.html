@@ -154,6 +154,9 @@
     .upcoming-art-frame{position:relative;isolation:isolate;width:100%;aspect-ratio:1/1;overflow:hidden;background:#17181b;border:1px solid rgba(255,255,255,.14);box-shadow:0 28px 70px rgba(0,0,0,.48)}
     .upcoming-art-frame:after{content:"";position:absolute;inset:10px;border:1px solid rgba(255,255,255,.11);pointer-events:none;z-index:3}
     .upcoming-art-frame img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.05) brightness(.77);transform:scale(1.015);transition:filter .8s var(--ease),transform 1.2s var(--ease)}
+    /* Keep the cover area clean while GitHub is being checked; reveal only a fully loaded image. */
+    #upcomingArtwork{opacity:0!important;visibility:hidden!important;transition:opacity .35s ease!important;}
+    .upcoming-art-frame.has-github-artwork #upcomingArtwork{opacity:1!important;visibility:visible!important;}
     .upcoming-feature:hover .upcoming-art-frame img{filter:grayscale(.12) contrast(1.03) brightness(.9);transform:scale(1.055)}
     .upcoming-art-vignette{position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(5,6,8,.46),transparent 32%,rgba(5,6,8,.04) 48%,rgba(5,6,8,.85) 100%),linear-gradient(90deg,rgba(0,0,0,.12),transparent 48%,rgba(0,0,0,.15))}
     .upcoming-art-topline{position:absolute;z-index:2;left:25px;right:25px;top:25px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:rgba(255,255,255,.8);font:700 7px 'Manrope',sans-serif;letter-spacing:.19em;text-transform:uppercase}
@@ -863,7 +866,7 @@
 <div class="upcoming-feature reveal" id="upcomingFeature">
 <div class="upcoming-art-column">
 <div class="upcoming-art-frame">
-<img alt="Upcoming SONVEX BEAT cover artwork" decoding="async" id="upcomingArtwork" loading="lazy">
+<img alt="Upcoming SONVEX BEAT cover artwork" decoding="async" id="upcomingArtwork">
 <div aria-hidden="true" class="upcoming-art-vignette"></div>
 <div class="upcoming-art-topline"><span>SONVEX BEAT · EXCLUSIVE</span><span>01 / NEXT RELEASE</span></div>
 <div class="upcoming-art-bottom"><span>THE NEXT RELEASE</span></div>
@@ -2835,16 +2838,22 @@
       else if(head.length >= 4 && head[0] === 0x47 && head[1] === 0x49 && head[2] === 0x46 && head[3] === 0x38) mime = 'image/gif';
       const objectUrl = URL.createObjectURL(new Blob([selected.buffer], {type:mime}));
       const previousObjectUrl = cover.dataset.githubObjectUrl;
-      cover.onload = () => { if(previousObjectUrl) URL.revokeObjectURL(previousObjectUrl); };
+      const frame = cover.closest('.upcoming-art-frame');
+      cover.onload = () => {
+        frame?.classList.add('has-github-artwork');
+        if(previousObjectUrl) URL.revokeObjectURL(previousObjectUrl);
+      };
       cover.onerror = () => {
         cover.onerror = null;
+        cover.onload = null;
         URL.revokeObjectURL(objectUrl);
-        if(cfg.artworkUrl) cover.src = cfg.artworkUrl;
+        frame?.classList.remove('has-github-artwork');
+        console.warn(`SONVEX upcoming GitHub cover could not be decoded: ${selectedName}`);
       };
       cover.dataset.githubObjectUrl = objectUrl;
       cover.src = objectUrl;
 
-      console.info(`SONVEX upcoming artwork loaded from GitHub: ${selectedName}`);
+      console.info(`SONVEX upcoming artwork fetched from GitHub: ${selectedName}; waiting for image decode.`);
       return true;
     }
 
@@ -2867,8 +2876,11 @@
       $('#upcomingDescription').textContent = cfg.description || 'A new SONVEX BEAT chapter is on its way.';
 
       const cover = $('#upcomingArtwork');
-      // Never preload an old SoundCloud/YouTube cover. The upcoming artwork comes only from GitHub.
-      cover.removeAttribute('src');
+      const coverFrame = cover?.closest('.upcoming-art-frame');
+      // Keep the artwork area visually clean until the GitHub image has fully loaded.
+      // Never expose the browser's broken-image icon or alt text during the fetch.
+      coverFrame?.classList.remove('has-github-artwork');
+      cover?.removeAttribute('src');
       cover.alt = `${title} — SONVEX BEAT upcoming release artwork`;
       // Each page load checks GitHub for the current cover file, so replacing cover.webp updates this section automatically.
       loadUpcomingGithubCover(cfg).catch(error => console.warn('SONVEX upcoming GitHub artwork update failed:', error));
