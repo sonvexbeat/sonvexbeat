@@ -1367,7 +1367,7 @@ body.eg-mode .brand-name{letter-spacing:.15em}
         </div>
       </div>
       <div class="eg-emblem-wrap" aria-label="SONVEX BEAT EG logo">
-        <div class="eg-emblem-ring"><img id="egViewLogo" alt="SONVEX BEAT EG silver monogram logo" src=""/><span class="eg-emblem-mark" aria-label="EG">EG</span></div>
+        <div class="eg-emblem-ring"><img id="egViewLogo" alt="SONVEX BEAT EG silver monogram logo" src="./eg-logo.webp"/></div>
         <div class="eg-emblem-caption">A SONVEX BEAT DIVISION · EGYPT</div>
       </div>
     </div>
@@ -3517,7 +3517,7 @@ const legal=document.getElementById('sonvexLegalView'),siteMain=document.querySe
   const originalBrandAlt = brandImage.alt;
   const originalBrandLabel = brand.getAttribute('aria-label');
   const originalLogo = brandImage.getAttribute('src');
-  const egLogo = originalLogo;
+  const egLogo = './eg-logo.webp';
   const egViewLogo = document.getElementById('egViewLogo');
   if(egViewLogo) egViewLogo.src = egLogo;
   const egNav = '<a href="#eg-home" data-eg-target="eg-home">Home</a><a href="#eg-about" data-eg-target="eg-about">About EG</a><a href="#eg-social" data-eg-target="eg-social">Social</a>';
